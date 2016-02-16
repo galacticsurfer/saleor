@@ -13,7 +13,7 @@ from .product.urls import urlpatterns as product_urls
 from .registration.urls import urlpatterns as registration_urls
 from .userprofile.urls import urlpatterns as userprofile_urls
 from .dashboard.urls import urlpatterns as dashboard_urls
-
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'', include('payments.urls'))
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     # static files (images, css, javascript, etc.)

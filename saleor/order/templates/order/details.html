@@ -31,7 +31,7 @@
                     {% if order.is_pre_authorized %}
                         <a href="{% url "order:payment" token=order.token %}" class="btn btn-info">{% trans "Payment details" %}</a>
                     {% else %}
-                        <a href="{% url "order:payment" token=order.token %}" class="btn btn-primary">{% trans "Pay for order" %}</a>
+                        <!--<a href="{% url "order:payment" token=order.token %}" class="btn btn-primary">{% trans "Pay for order" %}</a>-->
                     {% endif %}
                 {% endif %}
             </h3>

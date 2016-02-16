@@ -4,12 +4,11 @@
 
 <html lang="en" class="no-js">
     <head>
-        <title>{% block title %}Saleor{% endblock %}</title>
+        <title>{% block title %}TopSpin{% endblock %}</title>
         {% block meta %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{% block meta_description %}{% endblock %}">
-        <meta name="author" content="{% trans "Mirumee Software" %}">
         {% endblock meta %}
 
         <link rel="stylesheet" type="text/css" href="{% static "css/storefront.css" %}">
@@ -33,7 +32,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">Saleor</a>
+                        <a class="navbar-brand" href="/">TopSpin</a>
                     </div>
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav">
@@ -105,15 +104,6 @@
             </div>
             {% endblock outercontent %}
         </div>
-        {% block footer %}
-            <footer>
-                <div class="container">
-                    <p class="pull-right">
-                        &copy; Mirumee Software 2016
-                    </p>
-                </div>
-            </footer>
-        {% endblock %}
         {% block footer_scripts %}
             <script src="{% static "js/storefront.js" %}"></script>
         {% endblock footer_scripts %}

@@ -56,9 +56,10 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+#STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
+        '/Users/kuliza/code/saleor/static/',
     os.path.join(PROJECT_ROOT, 'saleor', 'static')
 ]
 STATICFILES_FINDERS = [
@@ -151,6 +152,7 @@ INSTALLED_APPS = [
     'selectable',
     'materializecssform',
     'rest_framework',
+    'django_extensions',
 ]
 
 LOGGING = {
@@ -210,9 +212,9 @@ AUTH_USER_MODEL = 'userprofile.User'
 
 LOGIN_URL = '/account/login'
 
-DEFAULT_CURRENCY = 'USD'
+DEFAULT_CURRENCY = 'INR'
 AVAILABLE_CURRENCIES = [DEFAULT_CURRENCY]
-DEFAULT_WEIGHT = 'lb'
+DEFAULT_WEIGHT = 'gm'
 
 ACCOUNT_ACTIVATION_DAYS = 3
 

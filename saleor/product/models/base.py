@@ -38,6 +38,9 @@ class Category(MPTTModel):
         verbose_name=pgettext_lazy('Category field', 'parent'))
     hidden = models.BooleanField(
         pgettext_lazy('Category field', 'hidden'), default=False)
+    image = VersatileImageField(
+        pgettext_lazy('Attribute choice value field', 'image'),
+        upload_to='attributes', blank=True, null=True)
 
     objects = Manager()
     tree = TreeManager()

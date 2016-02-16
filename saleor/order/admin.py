@@ -86,7 +86,7 @@ class OrderAdmin(OrderModelAdmin):
 
     inlines = [PaymentInlineAdmin]
     exclude = ['token']
-    readonly_fields = ['customer', 'total']
+    readonly_fields = ['customer', 'total', 'voucher']
     list_display = ['__str__', 'status', 'created', 'user']
 
     def customer(self, obj):
