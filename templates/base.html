@@ -12,6 +12,7 @@
         {% endblock meta %}
 
         <link rel="stylesheet" type="text/css" href="{% static "css/storefront.css" %}">
+	<link rel="shortcut icon" href="/static/img/favicon.ico">
 
         {% block stylesheet %}{% endblock stylesheet %}
 
@@ -107,6 +108,13 @@
             </div>
             {% endblock outercontent %}
         </div>
+	{% block footer %}
+            <footer>
+                <div class="container">
+                        <p style="text-align:center"> Topspin India Pvt Ltd. </p>
+                </div>
+            </footer>
+        {% endblock %}
         {% block footer_scripts %}
             <script src="{% static "js/storefront.js" %}"></script>
         {% endblock footer_scripts %}

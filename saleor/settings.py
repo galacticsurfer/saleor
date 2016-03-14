@@ -33,16 +33,16 @@ SQLITE_DB_URL = 'sqlite:///' + os.path.join(PROJECT_ROOT, 'dev.sqlite')
 DATABASES = {'default': dj_database_url.config(default=SQLITE_DB_URL)}
 
 
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Kolkata'
 LANGUAGE_CODE = 'en-us'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 
-EMAIL_URL = os.environ.get('EMAIL_URL', 'console://')
+EMAIL_URL = 'smtp://topspinbot@gmail.com:solaris4343@smtp.gmail.com:465/?ssl=True'
 email_config = dj_email_url.parse(EMAIL_URL)
-
+"""
 EMAIL_FILE_PATH = email_config['EMAIL_FILE_PATH']
 EMAIL_HOST_USER = email_config['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = email_config['EMAIL_HOST_PASSWORD']
@@ -51,7 +51,8 @@ EMAIL_PORT = email_config['EMAIL_PORT']
 EMAIL_BACKEND = email_config['EMAIL_BACKEND']
 EMAIL_USE_TLS = email_config['EMAIL_USE_TLS']
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-
+"""
+vars().update(email_config)
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'

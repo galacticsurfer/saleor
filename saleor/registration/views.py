@@ -33,6 +33,9 @@ def login(request):
 
 
 def logout(request):
+    user = request.user
+    user.is_active = True
+    user.save()
     auth_logout(request)
     messages.success(request, _('You have been successfully logged out.'))
     return redirect(settings.LOGIN_REDIRECT_URL)
