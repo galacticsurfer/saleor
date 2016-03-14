@@ -74,39 +74,37 @@
                     </div>
                 </nav>
             </header>
-        {% endblock %}
-        {% if messages %}
-        <div class="container">
-            {% for message in messages %}
-            <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ message }}
+            {% endblock %}
+
+	<div class="panel panel-default text-center">
+    <div class="panel-body">
+        <div class="col-lg-12 col-sm-12">
+            <div class="content-header">
+                <h1>Contact Us</h1>
+                <h2>We'd love to hear from you!</h2>
             </div>
-            {% endfor %}
         </div>
-        {% endif %}
-        <div class="container">
-            {% block outerbreadcrumb %}
-            <ul class="breadcrumb" itemprop="breadcrumb">
-                {% block breadcrumb %}
-                <li>
-                    <a href="/">{% trans "Home" %}</a>
-                </li>
-                {% endblock breadcrumb %}
-            </ul>
-            {% endblock outerbreadcrumb %}
-            {% block outercontent %}
-            <div class="row">
-                <div class="col-sm-12">
-                    {% block content %}
-                        <div class="row">
-                            {% include "category/_items.html" %}
-                        </div>
-                    {% endblock content %}
-                </div>
-            </div>
-            {% endblock outercontent %}
+
+            <h3>Our Bangalore Office:</h3>
+            <p>
+             
+                # 1339 Ground floor,<br>
+                25th Main HSR Layout Sector 2<br>
+                Bangalore 560102<br>
+                India<br>
+            </p>
+            <p class="email">
+                <span>Email:</span> <span><a href="mailto:topspindia@gmail.com">topspindia@gmail.com</a></span>
+            </p>
+
+        <div class="col-lg-6 col-sm-7 contact-us-form-wrapper">
+            <script charset="utf-8" src="//js.hsforms.net/forms/current.js"></script>
         </div>
+
+    </div>
+    </div>
+
+
         {% block footer_scripts %}
             <script src="{% static "js/storefront.js" %}"></script>
         {% endblock footer_scripts %}

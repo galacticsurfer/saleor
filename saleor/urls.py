@@ -14,6 +14,7 @@ from .registration.urls import urlpatterns as registration_urls
 from .userprofile.urls import urlpatterns as userprofile_urls
 from .dashboard.urls import urlpatterns as dashboard_urls
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 admin.autodiscover()
 
@@ -30,7 +31,10 @@ urlpatterns = [
     url(r'^selectable/', include('selectable.urls')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'', include('payments.urls'))
+    url(r'', include('payments.urls')),
+    url(r'^contact/', 
+            TemplateView.as_view(template_name='contact.html'),
+            name='contact_us'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
