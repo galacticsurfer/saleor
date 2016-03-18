@@ -172,8 +172,6 @@ class ProductVariant(models.Model, Item):
         return max([stock.quantity_available for stock in self.stock.all()])
 
     def get_price_per_item(self, discounts=None, **kwargs):
-        if not discounts:
-            discounts = Sale.objects.filter(type='fixed')
         price = self.price_override or self.product.price
         if discounts:
             discounts = list(
