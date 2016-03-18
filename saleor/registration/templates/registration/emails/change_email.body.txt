@@ -9,4 +9,4 @@ You have requested email change in saleor project. To continue visit the link be
 If you didn't mean to change your email please ignore this message. We apologise for inconvenience.
 
 Sincerely,
-Saleor Team{% endblocktrans %}{% endblock %}
+Topspin India Team{% endblocktrans %}{% endblock %}

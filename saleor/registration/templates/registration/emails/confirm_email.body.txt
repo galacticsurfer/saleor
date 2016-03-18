@@ -9,4 +9,4 @@ You have requested login access to Topspin India. To continue visit the link bel
 If you didn't try to login to Topspin India please ignore this message. We apologise for inconvenience.
 
 Sincerely,
-Saleor Team{% endblocktrans %}{% endblock %}
+Topspin India Team{% endblocktrans %}{% endblock %}
