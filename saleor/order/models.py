@@ -132,8 +132,9 @@ class Order(models.Model, ItemSet):
         payment_url = build_absolute_uri(
             reverse('order:details', kwargs={'token': self.token}))
         context = {'payment_url': payment_url}
-
+        admin_email = 'topspindia@gmail.com'
         emailit.api.send_mail(email, context, 'order/emails/confirm_email')
+        emailit.api.send_mail(admin_email, context, 'order/emails/confirm_email')
 
     def get_last_payment_status(self):
         last_payment = self.payments.last()
