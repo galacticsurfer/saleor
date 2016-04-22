@@ -63,6 +63,7 @@ unidecode==0.4.19
 uwsgi==2.0.12
 xmltodict==0.9.2          # via django-payments
 django-extensions
+django-google-analytics
 # The following packages are commented out because they are
 # considered to be unsafe in a requirements file:
 # setuptools                # via cryptography

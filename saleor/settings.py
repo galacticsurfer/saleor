@@ -154,6 +154,7 @@ INSTALLED_APPS = [
     'materializecssform',
     'rest_framework',
     'django_extensions',
+    'google_analytics',
 ]
 
 LOGGING = {
@@ -236,6 +237,8 @@ PAYMENT_VARIANTS = {
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+GOOGLE_ANALYTICS_TRACK_PAGE_LOAD_TIME = True
+
 
 CHECKOUT_PAYMENT_CHOICES = [
     ('default', 'Dummy provider')

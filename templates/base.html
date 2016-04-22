@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load analytics %}
 {% load i18n %}
 {% load staticfiles %}
 
@@ -117,6 +118,7 @@
         {% endblock %}
         {% block footer_scripts %}
             <script src="{% static "js/storefront.js" %}"></script>
-        {% endblock footer_scripts %}
+            {% endblock footer_scripts %}
+            {% analytics "UA-76805091-1" %}
     </body>
 </html>
