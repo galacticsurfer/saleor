@@ -118,6 +118,10 @@ class Product(models.Model, ItemRange):
     def product_description(self):
         return self.name + ' ' + self.description
 
+    @property
+    def keywords(self):
+        return self.name + ' ' + ' '.join([' '.join(i.name.split(' ')[1:]) for i in Product.objects.all()[0].variants.all()])
+
     def get_absolute_url(self):
         return reverse('product:details', kwargs={'slug': self.get_slug(),
                                                   'product_id': self.id})
