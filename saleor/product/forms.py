@@ -7,7 +7,6 @@ from django_prices.templatetags.prices_i18n import gross
 
 from ..cart.forms import AddToCartForm
 
-
 class VariantChoiceIterator(ModelChoiceIterator):
     def __init__(self, field):
         super(VariantChoiceIterator, self).__init__(field)
@@ -17,7 +16,6 @@ class VariantChoiceIterator(ModelChoiceIterator):
 
     def choice(self, obj):
         label = obj.display_variant(self.attributes)
-        label += ' - ' + gross(obj.get_price())
         return (self.field.prepare_value(obj), label)
 
 
