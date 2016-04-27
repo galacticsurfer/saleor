@@ -154,7 +154,6 @@ INSTALLED_APPS = [
     'materializecssform',
     'rest_framework',
     'django_extensions',
-    'google_analytics',
 ]
 
 LOGGING = {
@@ -225,7 +224,7 @@ LOGIN_REDIRECT_URL = 'home'
 FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 FACEBOOK_SECRET = os.environ.get('FACEBOOK_SECRET')
 
-GOOGLE_ANALYTICS_TRACKING_ID = os.environ.get('GOOGLE_ANALYTICS_TRACKING_ID')
+GOOGLE_ANALYTICS_TRACKING_ID = 'UA-76805091-1'
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 

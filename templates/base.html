@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% load analytics %}
 {% load i18n %}
 {% load staticfiles %}
 
@@ -9,7 +8,11 @@
         {% block meta %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% if product %}
+        <meta name="description" content="{{product.product_description }}">
+        {% else %}
         <meta name="description" content="Professional table tennis equipment store for the table tennis player exclusively in India. Quickest shipping, lowest prices, fanatical customer service. Rackets, blades, rubbers">
+        {% endif %}
         {% endblock meta %}
 
         <link rel="stylesheet" type="text/css" href="{% static "css/storefront.css" %}">
@@ -109,16 +112,17 @@
             </div>
             {% endblock outercontent %}
         </div>
-	{% block footer %}
+	    {% block footer %}
             <footer>
                 <div class="container">
-                        <p style="text-align:center"> Topspin India Pvt Ltd. </p>
+                    <p class="pull-right">
+                        &copy; Topspin India Pvt Ltd.
+                    </p>
                 </div>
             </footer>
         {% endblock %}
         {% block footer_scripts %}
             <script src="{% static "js/storefront.js" %}"></script>
             {% endblock footer_scripts %}
-            {% analytics "UA-76805091-1" %}
     </body>
 </html>

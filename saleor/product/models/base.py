@@ -114,6 +114,10 @@ class Product(models.Model, ItemRange):
     def __str__(self):
         return self.name
 
+    @property
+    def product_description(self):
+        return self.name + ' ' + self.description
+
     def get_absolute_url(self):
         return reverse('product:details', kwargs={'slug': self.get_slug(),
                                                   'product_id': self.id})
