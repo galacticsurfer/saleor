@@ -16,6 +16,9 @@ def product_details(request, slug, product_id):
     products = products.prefetch_related('categories', 'images',
                                          'variants__stock')
     product = get_object_or_404(products, id=product_id)
+    if product:
+        product.counter += 1
+        product.save()
     if product.get_slug() != slug:
         return HttpResponsePermanentRedirect(product.get_absolute_url())
     form_class = get_form_class_for_product(product)

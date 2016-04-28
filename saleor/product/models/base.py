@@ -95,6 +95,7 @@ class Product(models.Model, ItemRange):
         'ProductAttribute', related_name='products', blank=True)
     updated_at = models.DateTimeField(
         pgettext_lazy('Product field', 'updated at'), auto_now=True, null=True)
+    counter = models.IntegerField(default=0)
 
     objects = ProductManager()
 

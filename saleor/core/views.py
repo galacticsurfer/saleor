@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 def home(request):
-    products = Product.objects.get_available_products()
+    products = Product.objects.get_available_products().order_by('-counter')
     products = products.prefetch_related('categories', 'images',
                                          'variants__stock')
     products = get_paginator_items(
