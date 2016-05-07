@@ -34,7 +34,10 @@ class CountryMiddleware(object):
 
     def process_request(self, request):
         if 'REMOTE_ADDR' in request.META:
-            request.country = get_country_by_ip(request.META['REMOTE_ADDR'])
+            try:
+                request.country = get_country_by_ip(request.META['REMOTE_ADDR'])
+            except ValueError:
+                pass
         else:
             request.country = None
 
