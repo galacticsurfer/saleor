@@ -25,6 +25,11 @@ from ..utils import get_attributes_display_map
 from .fields import WeightField
 
 
+class CategoryManager(Manager):
+    def get_queryset(self):
+        return super(CategoryManager, self).get_queryset().exclude(hidden=True)
+
+
 @python_2_unicode_compatible
 class Category(MPTTModel):
     name = models.CharField(
@@ -68,6 +73,9 @@ class Category(MPTTModel):
 
 
 class ProductManager(InheritanceManager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().exclude(categories__hidden=True)
+
     def get_available_products(self):
         today = datetime.datetime.today()
         return self.get_queryset().filter(
@@ -268,6 +276,9 @@ class Stock(models.Model):
         validators=[MinValueValidator(0)], default=Decimal(1))
     quantity_allocated = models.IntegerField(
         pgettext_lazy('Stock item field', 'allocated quantity'),
+        validators=[MinValueValidator(0)], default=Decimal(0))
+    quantity_topspin = models.IntegerField(
+        pgettext_lazy('Stock item field', 'topspin quantity'),
         validators=[MinValueValidator(0)], default=Decimal(0))
     cost_price = PriceField(
         pgettext_lazy('Stock item field', 'cost price'),
