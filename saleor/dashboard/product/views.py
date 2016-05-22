@@ -28,6 +28,7 @@ def product_list(request):
 @staff_member_required
 def product_create(request):
     product = Product()
+    request.POST['counter'] = 0
     form = forms.ProductForm(request.POST or None, instance=product)
     if form.is_valid():
         product = form.save()
