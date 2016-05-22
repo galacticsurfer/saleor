@@ -31,6 +31,7 @@
                 </li>
 
                 {% for category in children_categories %}
+                    {% if not category.hidden %}
                     <li class="list-group-item">
                         {% if category.image %}
                             <a href="{{ category.get_absolute_url }}">
@@ -42,6 +43,7 @@
                             </a>
                         {% endif %}
                     </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
