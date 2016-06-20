@@ -3,32 +3,32 @@
 {% load staticfiles %}
 
 <html lang="en" class="no-js">
-    <head>
-        <title>{% block title %}TopSpin{% endblock %}</title>
-        {% block meta %}
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% if product %}
-        <meta name="description" content="{{product.product_description }}">
-        <meta name="Keywords" content="{{product.keywords}}"/>
-        {% else %}
-        <meta name="description" content="Professional table tennis equipment store for the table tennis player exclusively in India. Quickest shipping, lowest prices, fanatical customer service. Rackets, blades, rubbers">
-        {% endif %}
-        {% endblock meta %}
+<head>
+    <title>{% block title %}TopSpin{% endblock %}</title>
+    {% block meta %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if product %}
+    <meta name="description" content="{{product.product_description }}">
+    <meta name="Keywords" content="{{product.keywords}}"/>
+    {% else %}
+    <meta name="description" content="Professional table tennis equipment store for the table tennis player exclusively in India. Quickest shipping, lowest prices, fanatical customer service. Rackets, blades, rubbers">
+    {% endif %}
+    {% endblock meta %}
 
-        <link rel="stylesheet" type="text/css" href="{% static "css/storefront.css" %}">
-	<link rel="shortcut icon" href="/static/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href='{% static "css/storefront.css" %}'>
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
 
-        {% block stylesheet %}{% endblock stylesheet %}
+    {% block stylesheet %}{% endblock stylesheet %}
 
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    </head>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
 
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
         (function(){
          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -39,105 +39,275 @@
          s0.parentNode.insertBefore(s1,s0);
          })();
      </script>
-     <!--End of Tawk.to Script-->
+<!--End of Tawk.to Script-->
 
-    <body itemscope itemtype="http://schema.org/WebPage">
-        {% block header %}
-            <header class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
-                <nav class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="/">TopSpin</a>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav">
-                            {% for category in categories %}
-                                <li>
-                                    <a href="{{ category.get_absolute_url }}">
-                                        {{ category }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="{% url "contact_us" %}">Contact Us</a>
-                            </li>
-                            <li>
-                                <a href="{% url "cart:index" %}"><i class="fa fa-shopping-cart"></i> {% trans "Cart" %} {% if request.cart %}<span class="badge">{{ request.cart.count }}</span>{% endif %}</a>
-                            </li>
-                            {% if user.is_authenticated %}
-                            <li class="dropdown">
-                                <a data-toggle="dropdown" class="dropdown-toggle" href=".">{% blocktrans %}Hello, {{ user }}{% endblocktrans %} <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{% url "profile:details" %}">{% trans "Your profile" %}</a></li>
-                                    <li><a href="{% url "profile:orders" %}">{% trans "Your orders" %}</a></li>
-                                    {% if user.is_staff %}
-                                        <li class="divider"></li>
-                                        <li><a href="{% url "dashboard:index" %}">{% trans "Dashboard" %}</a></li>
-                                    {% endif %}
-                                    <li class="divider"></li>
-                                    <li><a href="{% url "registration:logout" %}">{% trans "Log out" %}</a></li>
-                                  </ul>
-                            </li>
-                            {% else %}
-                            <li>
-                                <a href="{% url "registration:login" %}">Sign in</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </nav>
-            </header>
-        {% endblock %}
-        {% if messages %}
-        <div class="container">
-            {% for message in messages %}
-            <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ message }}
-            </div>
-            {% endfor %}
+<body itemscope itemtype="http://schema.org/WebPage">
+{% block header %}
+<header class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
+    <nav class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">TopSpin</a>
         </div>
-        {% endif %}
-        <div class="container">
-            {% block outerbreadcrumb %}
-            <ul class="breadcrumb" itemprop="breadcrumb">
-                {% block breadcrumb %}
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% for category in categories %}
                 <li>
-                    <a href="/">{% trans "Home" %}</a>
+                    <a href="{{ category.get_absolute_url }}">
+                        {{ category }}
+                    </a>
                 </li>
-                {% endblock breadcrumb %}
+                {% endfor %}
             </ul>
-            {% endblock outerbreadcrumb %}
-            {% block outercontent %}
-            <div class="row">
-                <div class="col-sm-12">
-                    {% block content %}
-                        <div class="row">
-                            {% include "category/_items.html" %}
-                        </div>
-                    {% endblock content %}
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="{% url "contact_us" %}">Contact Us</a>
+                </li>
+                <li>
+                    <a href="{% url "cart:index" %}"><i class="fa fa-shopping-cart"></i> {% trans "Cart" %} {% if request.cart %}<span class="badge">{{ request.cart.count }}</span>{% endif %}</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href=".">{% blocktrans %}Hello, {{ user }}{% endblocktrans %} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url "profile:details" %}">{% trans "Your profile" %}</a></li>
+                        <li><a href="{% url "profile:orders" %}">{% trans "Your orders" %}</a></li>
+                        {% if user.is_staff %}
+                        <li class="divider"></li>
+                        <li><a href="{% url "dashboard:index" %}">{% trans "Dashboard" %}</a></li>
+                        {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="{% url "registration:logout" %}">{% trans "Log out" %}</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url "registration:login" %}">Sign in</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
+{% endblock %}
+{% if messages %}
+<div class="container">
+    {% for message in messages %}
+    <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<script type="text/javascript" src='{% static "js/jquery-1.11.3.min.js" %}'></script>
+<script type="text/javascript" src='{% static "js/jssor.slider.mini.js" %}'></script>
+<!-- use jssor.slider.debug.js instead for debug -->
+<script>
+        jQuery(document).ready(function ($) {
+
+            var jssor_1_SlideshowTransitions = [
+              {$Duration:1200,x:-0.3,$During:{$Left:[0.3,0.7]},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
+              {$Duration:1200,x:0.3,$SlideOut:true,$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2}
+            ];
+
+            var jssor_1_options = {
+              $AutoPlay: true,
+              $SlideshowOptions: {
+                $Class: $JssorSlideshowRunner$,
+                $Transitions: jssor_1_SlideshowTransitions,
+                $TransitionsOrder: 1
+              },
+              $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$
+              },
+              $BulletNavigatorOptions: {
+                $Class: $JssorBulletNavigator$
+              },
+              $ThumbnailNavigatorOptions: {
+                $Class: $JssorThumbnailNavigator$,
+                $Cols: 1,
+                $Align: 0,
+                $NoDrag: true
+              }
+            };
+
+            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+            //responsive code begin
+            //you can remove responsive code if you don't want the slider scales while window resizing
+            function ScaleSlider() {
+                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                if (refSize) {
+                    refSize = Math.min(refSize, 800);
+                    jssor_1_slider.$ScaleWidth(refSize);
+                }
+                else {
+                    window.setTimeout(ScaleSlider, 30);
+                }
+            }
+            ScaleSlider();
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            //responsive code end
+        });
+    </script>
+
+<style>
+
+    /* jssor slider bullet navigator skin 01 css */
+    /*
+    .jssorb01 div           (normal)
+    .jssorb01 div:hover     (normal mouseover)
+    .jssorb01 .av           (active)
+    .jssorb01 .av:hover     (active mouseover)
+    .jssorb01 .dn           (mousedown)
+    */
+    .jssorb01 {
+    position: absolute;
+    }
+    .jssorb01 div, .jssorb01 div:hover, .jssorb01 .av {
+    position: absolute;
+    /* size of bullet elment */
+    width: 12px;
+    height: 12px;
+    filter: alpha(opacity=70);
+    opacity: .7;
+    overflow: hidden;
+    cursor: pointer;
+    border: #000 1px solid;
+    }
+    .jssorb01 div { background-color: gray; }
+    .jssorb01 div:hover, .jssorb01 .av:hover { background-color: #d3d3d3; }
+    .jssorb01 .av { background-color: #fff; }
+    .jssorb01 .dn, .jssorb01 .dn:hover { background-color: #555555; }
+
+    /* jssor slider arrow navigator skin 05 css */
+    /*
+    .jssora05l                  (normal)
+    .jssora05r                  (normal)
+    .jssora05l:hover            (normal mouseover)
+    .jssora05r:hover            (normal mouseover)
+    .jssora05l.jssora05ldn      (mousedown)
+    .jssora05r.jssora05rdn      (mousedown)
+    */
+    .jssora05l, .jssora05r {
+    display: block;
+    position: absolute;
+    /* size of arrow element */
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    }
+    .jssora05l { background-position: -10px -40px; }
+    .jssora05r { background-position: -70px -40px; }
+    .jssora05l:hover { background-position: -130px -40px; }
+    .jssora05r:hover { background-position: -190px -40px; }
+    .jssora05l.jssora05ldn { background-position: -250px -40px; }
+    .jssora05r.jssora05rdn { background-position: -310px -40px; }
+
+    /* jssor slider thumbnail navigator skin 09 css */
+
+    .jssort09-600-45 .p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 45px;
+    }
+
+    .jssort09-600-45 .t {
+    font-family: verdana;
+    font-weight: normal;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color:#fff;
+    line-height: 45px;
+    font-size: 20px;
+    padding-left: 10px;
+    }
+</style>
+
+
+<div class="container">
+    {% block outerbreadcrumb %}
+    <ul class="breadcrumb" itemprop="breadcrumb">
+        {% block breadcrumb %}
+        <li>
+            <a href="/">{% trans "Home" %}</a>
+        </li>
+        {% endblock breadcrumb %}
+    </ul>
+    {% endblock outerbreadcrumb %}
+
+    <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1140px; height: 290px; overflow: hidden; visibility: hidden;">
+        <!-- Loading Screen -->
+        <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+            <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+            <div style="position:absolute;display:block;top:0px;left:0px;width:100%;height:100%;"></div>
+        </div>
+        <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 1140px; height: 290px; overflow: hidden;">
+            <div data-p="112.50" style="display: none;">
+                <img data-u="image" src='{% static "img/01.jpg" %}' />
+                <div data-u="thumb"></div>
+            </div>
+        </div>
+        <!-- Thumbnail Navigator -->
+        <div data-u="thumbnavigator" class="jssort09-600-45" style="position:absolute;bottom:0px;left:0px;width:1140px;height:45px;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height:100%; background-color: #000; filter:alpha(opacity=20.0); opacity:0.2;"></div>
+            <!-- Thumbnail Item Skin Begin -->
+            <div data-u="slides" style="cursor: default;">
+                <div data-u="prototype" class="p">
+                    <div data-u="thumbnailtemplate" class="t"></div>
                 </div>
             </div>
-            {% endblock outercontent %}
+            <!-- Thumbnail Item Skin End -->
         </div>
-	    {% block footer %}
-            <footer>
-                <div class="container">
-                    <p class="pull-right">
-                        &copy; Topspin India Pvt Ltd.
-                    </p>
-                </div>
-            </footer>
-        {% endblock %}
-        {% block footer_scripts %}
-            <script src="{% static "js/storefront.js" %}"></script>
-            {% endblock footer_scripts %}
-    </body>
+        <!-- Bullet Navigator -->
+        <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;">
+            <div data-u="prototype" style="width:12px;height:12px;"></div>
+        </div>
+        <!-- Arrow Navigator -->
+        <span data-u="arrowleft" class="jssora05l" style="top:0px;left:8px;width:40px;height:40px;" data-autocenter="2"></span>
+        <span data-u="arrowright" class="jssora05r" style="top:0px;right:8px;width:40px;height:40px;" data-autocenter="2"></span>
+    </div>
+
+    <br/>
+
+    {% block outercontent %}
+    <div class="row">
+        <div class="col-sm-12">
+            {% block content %}
+            <div class="row">
+                {% include "category/_items.html" %}
+            </div>
+            {% endblock content %}
+        </div>
+    </div>
+    {% endblock outercontent %}
+</div>
+{% block footer %}
+<footer>
+    <div class="container">
+        <p class="pull-right">
+            &copy; Topspin India Pvt Ltd.
+        </p>
+    </div>
+</footer>
+{% endblock %}
+{% block footer_scripts %}
+<script src='{% static "js/storefront.js" %}'></script>
+{% endblock footer_scripts %}
+</body>
 </html>
