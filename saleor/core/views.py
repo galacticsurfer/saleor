@@ -13,4 +13,4 @@ def home(request):
         products, settings.PAGINATE_BY, request.GET.get('page'))
     return TemplateResponse(
         request, 'base.html',
-        {'products': products, 'parent': None})
+        {'products': products, 'parent': None, 'show_banner': True})

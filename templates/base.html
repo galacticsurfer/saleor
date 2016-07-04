@@ -251,6 +251,7 @@
     </ul>
     {% endblock outerbreadcrumb %}
 
+    {% if show_banner %}
     <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1140px; height: 290px; overflow: hidden; visibility: hidden;">
         <!-- Loading Screen -->
         <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
@@ -284,6 +285,7 @@
     </div>
 
     <br/>
+    {% endif %}
 
     {% block outercontent %}
     <div class="row">
