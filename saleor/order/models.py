@@ -401,3 +401,21 @@ class OrderNote(models.Model):
 
     def __str__(self):
         return 'OrderNote for Order #%d' % self.order.pk
+
+
+@python_2_unicode_compatible
+class Ledger(models.Model):
+    HOLDER = (
+        ('Topspin', 'TOPSPIN'),
+        ('Sachin', 'SACHIN'),
+        ('Sarvotham', 'SARVOTHAM'),
+        ('Anup', 'ANUP'),
+    )
+    from_user = models.CharField(max_length=20, choices=HOLDER)
+    to_user = models.CharField(max_length=20, choices=HOLDER)
+    date = models.DateTimeField(auto_now_add=True)
+    amount = models.DecimalField(default=0, max_digits=12, decimal_places=4)
+    comment = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.comment

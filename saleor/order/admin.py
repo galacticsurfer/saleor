@@ -4,7 +4,7 @@ from django.forms.models import BaseInlineFormSet
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from .models import Order, OrderedItem, Payment
+from .models import Order, OrderedItem, Payment, Ledger
 
 
 def format_address(address):
@@ -102,4 +102,10 @@ class OrderAdmin(OrderModelAdmin):
         return False
 
 
+class LedgerAdmin(ModelAdmin):
+
+    list_display = ['__str__', 'from_user', 'to_user', 'amount']
+
+
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Ledger, LedgerAdmin)
