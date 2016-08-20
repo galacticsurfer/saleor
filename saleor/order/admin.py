@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 
 from .models import Order, OrderedItem, Payment, Ledger
 
+from django.db.models import Q
+
 
 def format_address(address):
     address = render_to_string('userprofile/snippets/address-details.html',
@@ -103,8 +105,47 @@ class OrderAdmin(OrderModelAdmin):
 
 
 class LedgerAdmin(ModelAdmin):
-
+    readonly_fields = ['topspin_to_sachin', 'topspin_to_anup', 'topspin_to_sarvo']
     list_display = ['__str__', 'from_user', 'to_user', 'amount']
+
+    def topspin_to_sachin(self, obj):
+        objects = Ledger.objects.filter(Q(from_user='Sachin') | Q(to_user='Sachin'))
+        ts_to_sachin = 0
+        for o in objects:
+            if o.from_user == 'Sachin':
+                ts_to_sachin -= o.amount
+            elif o.to_user == 'Sachin':
+                ts_to_sachin += o.amount
+            else:
+                pass
+
+        return ts_to_sachin
+
+    def topspin_to_anup(self, obj):
+        objects = Ledger.objects.filter(Q(from_user='Anup') | Q(to_user='Anup'))
+        ts_to_anup = 0
+        for o in objects:
+            if o.from_user == 'Anup':
+                ts_to_anup -= o.amount
+            elif o.to_user == 'Anup':
+                ts_to_anup += o.amount
+            else:
+                pass
+
+        return ts_to_anup
+
+    def topspin_to_sarvo(self, obj):
+        objects = Ledger.objects.filter(Q(from_user='Sarvotham') | Q(to_user='Sarvotham'))
+        ts_to_sarvo = 0
+        for o in objects:
+            if o.from_user == 'Sarvotham':
+                ts_to_sarvo -= o.amount
+            elif o.to_user == 'Sarvotham':
+                ts_to_sarvo += o.amount
+            else:
+                pass
+
+        return ts_to_sarvo
 
 
 admin.site.register(Order, OrderAdmin)
