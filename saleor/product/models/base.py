@@ -47,7 +47,7 @@ class Category(MPTTModel):
         pgettext_lazy('Attribute choice value field', 'image'),
         upload_to='attributes', blank=True, null=True)
 
-    objects = CategoryManager()
+    #objects = CategoryManager()
     tree = TreeManager()
 
     def __str__(self):
