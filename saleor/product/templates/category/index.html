@@ -22,27 +22,29 @@
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <li class="list-group-item active">
-                    {% if category.image %}
-                        <img src="{{ category.image.crop.100x25 }}" alt="">
-                    {% else %}
-                        {{ category }}
-                    {% endif %}
-                </li>
-
-                {% for category in children_categories %}
-                    {% if not category.hidden %}
-                    <li class="list-group-item">
+                {% for xcategory in children_categories %}
+                    {% if not xcategory.hidden %}
+                    {% if category == xcategory %}
+                        <li class="list-group-item active">
                         {% if category.image %}
-                            <a href="{{ category.get_absolute_url }}">
-                                <img src="{{ category.image.crop.100x25 }}" alt="">
-                            </a>
+                            <img src="{{ category.image.crop.100x25 }}" alt="">
                         {% else %}
-                            <a href="{{ category.get_absolute_url }}">
-                                {{ category }}
-                            </a>
+                            {{ category }}
                         {% endif %}
-                    </li>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">
+                            {% if xcategory.image %}
+                                <a href="{{ xcategory.get_absolute_url }}">
+                                    <img src="{{ xcategory.image.crop.100x25 }}" alt="">
+                                </a>
+                            {% else %}
+                                <a href="{{ xcategory.get_absolute_url }}">
+                                    {{ xcategory }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
                     {% endif %}
                 {% endfor %}
                 <li class="list-group-item" style="!padding 15px 15px">

@@ -39,6 +39,9 @@ def product_details(request, slug, product_id):
 def category_index(request, path, category_id):
     category = get_object_or_404(Category, id=category_id, hidden=False)
     children_categories = category.get_children()
+    if not children_categories:
+        if category.parent:
+            children_categories = category.parent.get_children()
     breadcrumbs = category.get_ancestors(include_self=True)
     actual_path = category.get_full_path()
     if actual_path != path:
