@@ -2,11 +2,11 @@
 
 {% block content %}{% blocktrans %}Hi!
 
-You have requested login access to Topspin India. To continue visit the link below.
+You have requested login access to Topspin.in. To continue visit the link below.
 
 {{ confirmation_url }}
 
-If you didn't try to login to Topspin India please ignore this message. We apologise for inconvenience.
+If you didn't try to login to Topspin.in please ignore this message. We apologise for inconvenience.
 
 Sincerely,
-Topspin India Team{% endblocktrans %}{% endblock %}
+Team Topspin{% endblocktrans %}{% endblock %}

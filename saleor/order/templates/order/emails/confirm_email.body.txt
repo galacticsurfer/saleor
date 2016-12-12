@@ -2,8 +2,8 @@
 
 {% block content %}{% blocktrans %}Hi!
 
-Thank you for your order. To see your payment details please visit:
+Thank you for your order. To track your order please visit:
 {{ payment_url }}
 
 Sincerely,
-Topspin India Team{% endblocktrans %}{% endblock %}
+Team Topspin{% endblocktrans %}{% endblock %}
