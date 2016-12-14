@@ -164,6 +164,14 @@ class Order(models.Model, ItemSet):
             return Price(net=self.total_net.net, gross=gross,
                          currency=settings.DEFAULT_CURRENCY)
 
+    @property
+    def total_exact(self):
+        if self.total_net is not None:
+            gross = self.total_net.net + self.total_tax.gross
+            price = Price(net=self.total_net.net, gross=gross, currency=settings.DEFAULT_CURRENCY)
+            return str(price.gross)
+
+
     @total.setter
     def total(self, price):
         self.total_net = price

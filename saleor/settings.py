@@ -154,6 +154,7 @@ INSTALLED_APPS = [
     'materializecssform',
     'rest_framework',
     'django_extensions',
+    #'haystack',
 ]
 
 LOGGING = {
@@ -240,7 +241,7 @@ GOOGLE_ANALYTICS_TRACK_PAGE_LOAD_TIME = True
 
 
 CHECKOUT_PAYMENT_CHOICES = [
-    ('default', 'Dummy provider')
+    ('default', 'PayUmoney')
 ]
 
 MESSAGE_TAGS = {
@@ -283,4 +284,13 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('product_page_big', 'crop__750x750'),
         ('product_page_thumb', 'crop__280x280')
     ]
+}
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
 }

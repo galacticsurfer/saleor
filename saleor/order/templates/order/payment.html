@@ -21,6 +21,59 @@
 {% block content %}
 
     <div class="row">
+        <div class="col-sm-8">
+         {% if order.user == user or not order.is_fully_paid %}
+
+             {% if not order.is_fully_paid %}
+                 <div class="panel panel-info">
+                     {% if waiting_payment %}
+                         <div class="panel-heading">
+                             {% trans "Payment pending" %}
+                         </div>
+                         <div class="panel-body">
+                             <form method="post" action="{% url 'order:cancel-payment' token=order.token %}">
+                                 {% csrf_token %}
+                                 <p>{% trans "We are currently waiting for an external service to authorize your payment for this order." %}</p>
+                                 <p>{% trans "Current status" %}: <span class="label label-default">{{ waiting_payment.get_status_display }}</span></p>
+                                 <p>{% trans "Unless you are absolutely sure that the process will not complete (for example you have closed the browser window before paying), you should wait before attempting a new payment. Please be warned that if you try again and the previous transaction succeeds you might end up being charged twice." %}</p>
+                                 {% bootstrap_form waiting_payment_form %}
+                                 <button type="submit" class="btn btn-danger">{% trans "I understand, allow me to pay again" %}</button>
+                             </form>
+                         </div>
+                     {% elif payment_form %}
+                         <div class="panel-heading">
+                             {% trans "Pay for order" %} {{ order }}
+                         </div>
+                         <div class="panel-body">
+                             <form method="post" action="{% url "order:payment" token=order.token %}">
+                                 {% csrf_token %}
+                                 {{ payment_form }}
+                                 <div class="form-group text-right">
+                                     {% block form_submit %}
+                                         <span class='pm-button' id='AAFB060DA463A46658C62D4F4CD192EF' onclick="window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');window.PUM.pay()">
+                                            <span class="state active">
+                                            <input type="image" src="https://file.payumoney.com/images/payby_payumoney/new_buttons/21.png" width="131" height="37">
+                                            </span>
+                                            <span class="state clicked" style="display:none" >
+                                            <input type="image" src="https://file.payumoney.com/images/payby_payumoney/new_buttons/submitted/21.png" width="131" height="37">
+                                            </span>
+                                        </span>
+                                     {% endblock %}
+                                 </div>
+                             </form>
+                         </div>
+                     {% else %}
+                         <div class="panel-body alert-info">
+                             <span>{% trans "You've authorized transaction. Order is in processing" %}</span>
+                         </div>
+                     {% endif %}
+                 </div>
+             {% endif %}
+         {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
         {% if order.user == user %}
             <div class="col-sm-6">
                 <div class="panel panel-default">
