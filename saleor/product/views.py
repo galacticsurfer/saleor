@@ -9,6 +9,7 @@ from .forms import get_form_class_for_product
 from .models import Product, Category
 from ..cart import Cart
 from ..core.utils import get_paginator_items
+from ..core.views import message
 
 
 def product_details(request, slug, product_id):
@@ -33,7 +34,7 @@ def product_details(request, slug, product_id):
     templates = [template_name, 'product/details.html']
     return TemplateResponse(
         request, templates,
-        {'product': product, 'form': form})
+        {'product': product, 'form': form, 'messages': [message]})
 
 
 def category_index(request, path, category_id):
@@ -56,4 +57,4 @@ def category_index(request, path, category_id):
         request, 'category/index.html',
         {'products': products, 'category': category,
          'children_categories': children_categories,
-         'breadcrumbs': breadcrumbs})
+         'breadcrumbs': breadcrumbs, 'messages': [message]})

@@ -12,6 +12,8 @@ from .forms import ReplaceCartLineForm
 from ..cart.utils import (
     contains_unavailable_products, remove_unavailable_products)
 
+from ..core.views import message
+
 
 def index(request, product_id=None):
     if product_id is not None:
@@ -51,4 +53,4 @@ def index(request, product_id=None):
     cart_partitioner = cart.partition()
     return TemplateResponse(
         request, 'cart/index.html', {
-            'cart': cart_partitioner})
+            'cart': cart_partitioner, 'messages': [message]})
