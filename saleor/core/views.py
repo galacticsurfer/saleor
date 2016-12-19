@@ -14,7 +14,7 @@ class Message(object):
         return self.message
 
 message = Message('Orders placed after 20th Dec 2016 will be processed after 3rd Jan 2017, Merry Christmas and a '
-                  'Happy New Year to all our loyal customers !')
+                  'Happy New Year to all !')
 
 
 def home(request):
