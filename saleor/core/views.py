@@ -13,8 +13,8 @@ class Message(object):
     def __str__(self):
         return self.message
 
-#message = Message('Orders placed after 20th Dec 2016 will be processed after 3rd Jan 2017, Merry Christmas and a '
-#                  'Happy New Year to all !')
+#message = [Message('Orders placed after 20th Dec 2016 will be processed after 3rd Jan 2017, Merry Christmas and a '
+#                  'Happy New Year to all !')]
 
 message = None
 
@@ -27,4 +27,4 @@ def home(request):
         products, settings.PAGINATE_BY, request.GET.get('page'))
     return TemplateResponse(
         request, 'base.html',
-        {'products': products, 'parent': None, 'show_banner': True, 'messages': [message]})
+        {'products': products, 'parent': None, 'show_banner': True, 'messages': message})

@@ -53,4 +53,4 @@ def index(request, product_id=None):
     cart_partitioner = cart.partition()
     return TemplateResponse(
         request, 'cart/index.html', {
-            'cart': cart_partitioner, 'messages': [message]})
+            'cart': cart_partitioner, 'messages': message})
