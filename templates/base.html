@@ -26,6 +26,12 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+        function pay() {
+            window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');
+            window.PUM.pay();
+        }
+    </script>
 </head>
 
 <!--Start of Tawk.to Script-->
