@@ -27,10 +27,10 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script type="text/javascript">
-        function pay() {
+    document.getElementById("AAFB060DA463A46658C62D4F4CD192EF").onclick = function() {
             window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');
             window.PUM.pay();
-        }
+        };
     </script>
 </head>
 
