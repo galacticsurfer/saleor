@@ -47,7 +47,7 @@
                          <div class="panel-body">
                              <form method="post" action="{% url "order:payment" token=order.token %}">
                                  {% csrf_token %}
-                                 {{ payment_form }}
+
                                  <div class="form-group text-right">
                                      {% block form_submit %}
                                          <!--<span class='pm-button' id='AAFB060DA463A46658C62D4F4CD192EF' onclick="window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');window.PUM.pay()">-->

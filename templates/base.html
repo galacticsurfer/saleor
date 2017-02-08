@@ -31,12 +31,16 @@
     document.getElementById("AAFB060DA463A46658C62D4F4CD192EF").onclick = function() {
             window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');
             window.PUM.pay();
-        };
+            return false
+        }
+
     document.getElementById("topspin_payment").onclick = function() {
             window.PUM.setData({{order.total_exact }}, '{{order.id}}','{{order.token}}');
             window.PUM.pay();
+            return false;
         };
     }
+
     </script>
 </head>
 
