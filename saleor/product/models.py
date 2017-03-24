@@ -39,6 +39,8 @@ class Category(MPTTModel):
         verbose_name=pgettext_lazy('Category field', 'parent'))
     hidden = models.BooleanField(
         pgettext_lazy('Category field', 'hidden'), default=False)
+    image = VersatileImageField(pgettext_lazy('Attribute choice value field', 'image'),
+                                upload_to='attributes', blank=True, null=True)
 
     objects = models.Manager()
     tree = TreeManager()
@@ -157,6 +159,15 @@ class Product(models.Model, ItemRange, index.Indexed):
 
     def __str__(self):
         return self.name
+
+    @property
+    def product_description(self):
+        return self.name + ' ' + self.description
+
+    @property
+    def keywords(self):
+        return self.name + ' ' + ' '.join([' '.join(i.name.split(' ')) for i in
+                                           Product.objects.all()[0].variants.all()])
 
     def get_absolute_url(self):
         return reverse('product:details', kwargs={'slug': self.get_slug(),
