@@ -157,6 +157,11 @@
         font-size: 20px;
         padding-left: 10px;
         }
+
+            .logo {
+            max width: 200px !important;
+            max-height: 100px !important;
+            }
     </style>
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -224,13 +229,13 @@
                 <div class="navbar__brand">
                   <div class="container">
                     <div class="row no-gutters">
-                      <div class="col-8 col-md-4">
+                      <div class="col-8 col-md-4 navbar__logo">
                         <div class="menu-icon-mobile hidden-md-up">
                           <img class="navbar__brand__menu-toggle closed open" src="{% static "images/mobile-bar.svg" %}">
                           <span>{% trans "menu" context "Hamburger button text" %}</span>
                         </div>
                         <a href="/">
-                          <img src="{% static "images/LOGO_SideText.png" %}" alt="Testeor - Saleor demo store" height="100">
+                          <img class="logo" src="{% static "images/LOGO_SideText.png" %}" alt="Testeor - Saleor demo store" max-height:none height="100">
                         </a>
                       </div>
                       <div class="col-2 col-md-4 navbar__search static">
