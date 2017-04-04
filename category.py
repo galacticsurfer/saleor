@@ -2,6 +2,9 @@ import csv
 from saleor.product.models import Category, Product, ProductClass, ProductVariant, ProductAttribute,\
     StockLocation, Stock
 from saleor.userprofile.models import Address, User
+from saleor.shipping.models import ShippingMethod, ShippingMethodCountry
+from saleor.order.models import Order, DeliveryGroup, OrderedItem, OrderHistoryEntry, Payment
+from django.contrib.sessions.models import Session
 
 
 def popupate_categories():
@@ -88,7 +91,7 @@ def populate_product_stock():
 
 
 def populate_userprofile_address():
-    with open('/Users/kuliza/export/userprofile_address.csv') as csvfile:
+    with open('/Users/kuliza/export_latest/userprofile_address.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             address_id = row['id']
@@ -111,7 +114,7 @@ def populate_userprofile_address():
 
 
 def populate_userprofile_user():
-    with open('/Users/kuliza/export/userprofile_user.csv') as csvfile:
+    with open('/Users/kuliza/export_latest/userprofile_user.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             user_id = row['id']
@@ -130,12 +133,181 @@ def populate_userprofile_user():
                                 default_shipping_address_id=default_shipping_address_id)
 
 
+def populate_userprofile_user_addresses():
+    with open('/Users/kuliza/export_latest/userprofile_user_addresses.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            user_id = row['user_id']
+            address_id = row['address_id']
+            user = User.objects.get(id=user_id)
+            address = Address.objects.get(id=address_id)
+            user.addresses.add(address)
+            user.save()
+
+
+def populate_shipping_shippingmethod():
+    with open('/Users/kuliza/export_latest/shipping_shippingmethod.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            name = row['name']
+            description = row['description']
+            ShippingMethod.objects.create(id=xid, name=name, description=description)
+
+
+def populate_shipping_shippingmethodcountry():
+    with open('/Users/kuliza/export_latest/shipping_shippingmethodcountry.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            country_code = row['country_code']
+            shipping_method_id = row['shipping_method_id']
+            price = row['price']
+            ShippingMethodCountry.objects.create(id=xid, country_code=country_code,
+                                                 shipping_method_id=shipping_method_id, price=price)
+
+
+def populate_django_sessions():
+    with open('/Users/kuliza/export_latest/django_session.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            session_key = row['session_key']
+            session_data = row['session_data']
+            expire_date = row['expire_date']
+            Session.objects.create(session_key=session_key, session_data=session_data, expire_date=expire_date)
+
+
+def populate_order_order():
+    with open('/Users/kuliza/export_latest/order_order.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            status = row['status']
+            created = row['created']
+            tracking_client_id = row['tracking_client_id']
+            user_email = row['anonymous_user_email']
+            billing_address_id = row['billing_address_id']
+            shipping_address_id = row['shipping_address_id']
+            user_id = row['user_id']
+            total_net = row['total_net']
+            total_tax = row['total_tax']
+            Order.objects.create(id=xid, status=status, created=created, tracking_client_id=tracking_client_id,
+                                 user_email=user_email, billing_address_id=billing_address_id, shipping_address_id=shipping_address_id,
+                                 user_id=user_id, total_net=total_net, total_tax=total_tax)
+
+
+def populate_order_deliverygroup():
+    with open('/Users/kuliza/export_latest/order_deliverygroup.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            status = row['status']
+            order_id = row['order_id']
+            last_updated = row['last_updated']
+            tracking_number = row['tracking_number']
+            shipping_method_name = row['shipping_method_name']
+            shipping_price = row['shipping_price']
+
+            DeliveryGroup.objects.create(id=xid, status=status, order_id=order_id, last_updated=last_updated,
+                                         tracking_number=tracking_number, shipping_method_name=shipping_method_name,
+                                         shipping_price=shipping_price)
+
+
+def populate_order_ordereditem():
+    with open('/Users/kuliza/export_latest/order_ordereditem.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            product_name = row['product_name']
+            product_sku = row['product_sku']
+            quantity = row['quantity']
+            unit_price_net = row['unit_price_net']
+            unit_price_gross = row['unit_price_gross']
+            delivery_group_id = row['delivery_group_id']
+            product_id = row['product_id']
+            stock_id = row['stock_id']
+            stock_location = row['stock_location']
+
+            OrderedItem.objects.create(id=xid, product_name=product_name, product_sku=product_sku, quantity=quantity,
+                                       unit_price_net=unit_price_net, unit_price_gross=unit_price_gross,
+                                       delivery_group_id=delivery_group_id, product_id=product_id, stock_id=stock_id,
+                                       stock_location=stock_location)
+
+
+def populate_order_orderhistoryentry():
+    with open('/Users/kuliza/export_latest/order_orderhistoryentry.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            date = row['date']
+            status = row['status']
+            comment = row['comment']
+            order_id = row['order_id']
+            user_id = row['user_id']
+
+            OrderHistoryEntry.objects.create(id=xid, date=date, status=status, comment=comment, order_id=order_id,
+                                             user_id=user_id)
+
+
+def populate_order_payment():
+    with open('/Users/kuliza/export_latest/order_payment.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            xid = row['id']
+            variant = row['variant']
+            fraud_status = row['fraud_status']
+            fraud_message = row['fraud_message']
+            created = row['created']
+            modified = row['modified']
+            transaction_id = row['transaction_id']
+            currency = row['currency']
+            total = row['total']
+            delivery = row['delivery']
+            tax = row['tax']
+            description = row['description']
+            billing_first_name = row['billing_first_name']
+            billing_last_name = row['billing_last_name']
+            billing_address_1 = row['billing_address_1']
+            billing_address_2 = row['billing_address_2']
+            billing_city = row['billing_city']
+            billing_postcode = row['billing_postcode']
+            billing_country_code = row['billing_country_code']
+            billing_country_area = row['billing_country_area']
+            billing_email = row['billing_email']
+            extra_data = row['extra_data']
+            message = row['message']
+            token = row['token']
+            captured_amount = row['captured_amount']
+            order_id = row['order_id']
+            customer_ip_address = row['customer_ip_address']
+            Payment.objects.create(id=xid, variant=variant, fraud_status=fraud_status, fraud_message=fraud_message,
+                                   created=created, modified=modified, transaction_id=transaction_id, currency=currency,
+                                   total=total, delivery=delivery, tax=tax, description=description,
+                                   billing_first_name=billing_first_name, billing_last_name=billing_last_name,
+                                   billing_address_1=billing_address_1, billing_address_2=billing_address_2,
+                                   billing_city=billing_city, billing_postcode=billing_postcode,
+                                   billing_country_code=billing_country_code, billing_country_area=billing_country_area,
+                                   billing_email=billing_email, extra_data=extra_data, message=message, token=token,
+                                   captured_amount=captured_amount, order_id=order_id,
+                                   customer_ip_address=customer_ip_address)
+
+
 def populate():
-    popupate_categories()
-    populate_products()
-    populate_product_product_category()
-    populate_product_productattribute()
-    populate_product_productvariant()
-    populate_product_stock()
+    # popupate_categories()
+    # populate_products()
+    # populate_product_product_category()
+    # populate_product_productattribute()
+    # populate_product_productvariant()
+    # populate_product_stock()
+    
     populate_userprofile_address()
     populate_userprofile_user()
+    populate_userprofile_user_addresses()
+    populate_shipping_shippingmethod()
+    populate_shipping_shippingmethodcountry()
+    populate_django_sessions()
+    populate_order_order()
+    populate_order_deliverygroup()
+    populate_order_ordereditem()
+    populate_order_orderhistoryentry()
+    populate_order_payment()
