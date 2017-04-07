@@ -121,10 +121,7 @@ class Order(models.Model, ItemSet, index.Indexed):
         return OrderedItem.objects.filter(delivery_group__order=self)
 
     def is_fully_paid(self):
-        total_paid = sum([payment.total for payment in
-                          self.payments.filter(status=PaymentStatus.CONFIRMED)], Decimal())
-        total = self.get_total()
-        return total_paid >= total.gross
+        return self.status == 'fully-paid'
 
     def get_user_current_email(self):
         if self.user:
@@ -176,6 +173,11 @@ class Order(models.Model, ItemSet, index.Indexed):
 
         emailit.api.send_mail(
             email, context, 'order/emails/confirm_email',
+            from_email=settings.ORDER_FROM_EMAIL)
+
+        admin_email = 'topspindia@gmail.com'
+        emailit.api.send_mail(
+            admin_email, context, 'order/emails/confirm_email',
             from_email=settings.ORDER_FROM_EMAIL)
 
     def get_last_payment_status(self):

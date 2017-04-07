@@ -9,6 +9,7 @@ from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import pgettext_lazy
+from django.shortcuts import redirect
 from payments import PaymentStatus, RedirectNeeded
 
 from .forms import PaymentDeleteForm, PaymentMethodsForm, PasswordForm
@@ -17,6 +18,11 @@ from .utils import check_order_status, attach_order_to_user
 from ..core.utils import get_client_ip
 from ..userprofile.models import User
 from . import OrderStatus
+
+from instamojo_wrapper import Instamojo
+
+API_KEY = '7bf37572982c8210414b4ab07405c97f'
+AUTH_TOKEN = 'ce2e379f67fd8077242621c74fae2fe6'
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +71,62 @@ def payment(request, token):
                              'waiting_payment': waiting_payment,
                              'waiting_payment_form': waiting_payment_form,
                              'payments': payments})
+
+
+def payment_mojo(request, token):
+    orders = Order.objects.prefetch_related('groups__items__product')
+    orders = orders.select_related('billing_address', 'shipping_address',
+                                   'user')
+    order = get_object_or_404(orders, token=token)
+    have_details = False
+    if order._shipping_address_cache:
+        first_name = order._shipping_address_cache.first_name
+        last_name = order._shipping_address_cache.last_name
+        phone = order._shipping_address_cache.phone
+        full_name = first_name + ' ' + last_name
+        total_net = str(order.total_net[0])
+        purpose = "Order #%s at topspin.in" % (str(order.id),)
+        have_details = True
+    elif order._billing_address_cache:
+        first_name = order._billing_address_cache.first_name
+        last_name = order._billing_address_cache.last_name
+        phone = order._billing_address_cache.phone
+        full_name = first_name + ' ' + last_name
+        total_net = str(order.total_net[0])
+        purpose = "Order #%s at topspin.in" % (str(order.id),)
+        have_details = True
+    else:
+        pass
+
+    if have_details:
+        api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
+        response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=True,
+                                              email="foo@example.com",
+                                              redirect_url="http://localhost:8000/order/payment_callback",
+                                              buyer_name=full_name, phone=phone)
+
+        payment_url = response['payment_request']['longurl']
+        return redirect(payment_url)
+    else:
+        return redirect('/')
+
+
+def payment_callback(request):
+    payment_id = request.GET.get('payment_id')
+    payment_request_id = request.GET.get('payment_request_id')
+
+    api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
+    response = api.payment_request_status(payment_request_id)
+    order_id = response['payment_request'].get('purpose').split(' ')[1].split('#')[1]
+    status_complete = response['payment_request'].get('status') == 'Completed'
+
+    if status_complete:
+        order = Order.objects.get(id=order_id)
+        order.status = 'fully-paid'
+        order.save()
+        return redirect('/order/%s/' % (order.token, ))
+    else:
+        return redirect('/')
 
 
 @check_order_status

@@ -5,6 +5,7 @@ from saleor.userprofile.models import Address, User
 from saleor.shipping.models import ShippingMethod, ShippingMethodCountry
 from saleor.order.models import Order, DeliveryGroup, OrderedItem, OrderHistoryEntry, Payment
 from django.contrib.sessions.models import Session
+from django.db import connection
 
 
 def popupate_categories():
@@ -292,6 +293,32 @@ def populate_order_payment():
                                    customer_ip_address=customer_ip_address)
 
 
+def set_sequence():
+    sequences = ['account_emailaddress_id_seq', 'account_emailconfirmation_id_seq', 'auth_group_id_seq',
+                 'auth_group_permissions_id_seq', 'auth_permission_id_seq', 'cart_cartline_id_seq',
+                 'discount_sale_categories_id_seq', 'discount_sale_id_seq', 'discount_sale_products_id_seq',
+                 'discount_voucher_id_seq', 'django_admin_log_id_seq', 'django_content_type_id_seq',
+                 'django_prices_openexchangerates_conversionrate_id_seq', 'django_site_id_seq',
+                 'order_deliverygroup_id_seq', 'order_order_id_seq', 'order_ordereditem_id_seq',
+                 'order_orderhistoryentry_id_seq', 'order_ordernote_id_seq', 'order_payment_id_seq',
+                 'product_attributechoicevalue_id_seq', 'product_category_id_seq', 'product_product_categories_id_seq',
+                 'product_product_id_seq', 'product_productattribute_id_seq', 'product_productclass_id_seq',
+                 'product_productclass_product_attributes_id_seq', 'product_productclass_variant_attributes_id_seq',
+                 'product_productimage_id_seq', 'product_productvariant_id_seq', 'product_stock_id_seq',
+                 'product_stocklocation_id_seq', 'product_variantimage_id_seq', 'shipping_shippingmethod_id_seq',
+                 'shipping_shippingmethodcountry_id_seq', 'site_sitesettings_id_seq', 'userprofile_address_id_seq',
+                 'userprofile_user_addresses_id_seq', 'userprofile_user_groups_id_seq', 'userprofile_user_id_seq',
+                 'userprofile_user_user_permissions_id_seq']
+
+    with connection.cursor() as cursor:
+        for seq in sequences:
+            sequence_table = seq.replace('_id_seq', '')
+            cursor.execute("SELECT setval('%s', max(id)) FROM %s;" % (seq, sequence_table))
+            row = cursor.fetchone()
+            print row
+
+
+#truncate table userprofile_address CASCADE;
 def populate():
     # popupate_categories()
     # populate_products()
@@ -299,15 +326,17 @@ def populate():
     # populate_product_productattribute()
     # populate_product_productvariant()
     # populate_product_stock()
-    
-    populate_userprofile_address()
-    populate_userprofile_user()
-    populate_userprofile_user_addresses()
-    populate_shipping_shippingmethod()
-    populate_shipping_shippingmethodcountry()
-    populate_django_sessions()
-    populate_order_order()
-    populate_order_deliverygroup()
-    populate_order_ordereditem()
-    populate_order_orderhistoryentry()
-    populate_order_payment()
+
+    # populate_userprofile_address()
+    # populate_userprofile_user()
+    # populate_userprofile_user_addresses()
+    # populate_shipping_shippingmethod()
+    # populate_shipping_shippingmethodcountry()
+    # populate_django_sessions()
+    # populate_order_order()
+    # populate_order_deliverygroup()
+    # populate_order_ordereditem()
+    # populate_order_orderhistoryentry()
+    # populate_order_payment()
+
+    set_sequence()

@@ -69,9 +69,8 @@
                                     Pay for order {{ order }}
                                 {% endblocktrans %}
                             </h1>
-                            <form method="post" action="{% url "order:payment" token=order.token %}" class="payment-method-form radio">
+                            <form method="post" action="{% url "order:payment_mojo" token=order.token %}" class="payment-method-form radio">
                               {% csrf_token %}
-                              {{ payment_form }}
                               {% block form_submit %}
                                     <button type="submit" class="btn primary">
                                         {% trans "Proceed to payment" context "Payment details primary action" %}
