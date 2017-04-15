@@ -26,6 +26,11 @@ from ..search import index
 from .utils import get_attributes_display_map
 
 
+class CategoryManager(models.Manager):
+    def get_queryset(self):
+        return super(CategoryManager, self).get_queryset().exclude(hidden=True)
+
+
 @python_2_unicode_compatible
 class Category(MPTTModel):
     name = models.CharField(
@@ -42,7 +47,7 @@ class Category(MPTTModel):
     image = VersatileImageField(pgettext_lazy('Attribute choice value field', 'image'),
                                 upload_to='attributes', blank=True, null=True)
 
-    objects = models.Manager()
+    objects = CategoryManager()
     tree = TreeManager()
 
     class Meta:
@@ -104,6 +109,9 @@ class ProductClass(models.Model):
 
 
 class ProductManager(models.Manager):
+
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().exclude(categories__hidden=True)
 
     def get_available_products(self):
         today = datetime.date.today()
