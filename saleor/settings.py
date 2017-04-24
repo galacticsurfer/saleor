@@ -20,6 +20,9 @@ ROOT_URLCONF = 'saleor.urls'
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 ADMINS = (
+    ('Sachin Prabhu', 'sachin@topspin.in'),
+    ('Sarvotham Pai', 'sarvo@topspin.in'),
+    ('Anup Basti', 'anup@topspin.in'),
     # ('Your Name', 'your_email@example.com'),
 )
 MANAGERS = ADMINS
@@ -46,7 +49,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-EMAIL_URL = os.environ.get('EMAIL_URL')
+EMAIL_URL = 'smtp://topspinbot@gmail.com:solaris4343@smtp.gmail.com:465/?ssl=True'
 SENDGRID_USERNAME = os.environ.get('SENDGRID_USERNAME')
 SENDGRID_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
 if not EMAIL_URL and SENDGRID_USERNAME and SENDGRID_PASSWORD:
@@ -282,7 +285,7 @@ BOOTSTRAP3 = {
 
 TEST_RUNNER = ''
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split()
+ALLOWED_HOSTS = ['*']
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

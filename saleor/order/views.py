@@ -21,8 +21,8 @@ from . import OrderStatus
 
 from instamojo_wrapper import Instamojo
 
-API_KEY = '7bf37572982c8210414b4ab07405c97f'
-AUTH_TOKEN = 'ce2e379f67fd8077242621c74fae2fe6'
+API_KEY = 'd311f60b78fb398fab235483fd401cc5'
+AUTH_TOKEN = '46818d0dcf18712cc22c0b574795945f'
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +85,7 @@ def payment_mojo(request, token):
         phone = order._shipping_address_cache.phone
         full_name = first_name + ' ' + last_name
         total_net = str(order.total_net[0])
+        email = order.user_email
         purpose = "Order #%s at topspin.in" % (str(order.id),)
         have_details = True
     elif order._billing_address_cache:
@@ -93,16 +94,16 @@ def payment_mojo(request, token):
         phone = order._billing_address_cache.phone
         full_name = first_name + ' ' + last_name
         total_net = str(order.total_net[0])
+        email = order.user_email
         purpose = "Order #%s at topspin.in" % (str(order.id),)
         have_details = True
     else:
         pass
 
     if have_details:
-        api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
-        response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=True,
-                                              email="foo@example.com",
-                                              redirect_url="http://localhost:8000/order/payment_callback",
+        api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
+        response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=False, send_sms=True,
+                                              email=email, redirect_url="http://topspin.in:8000/order/payment_callback",
                                               buyer_name=full_name, phone=phone)
 
         payment_url = response['payment_request']['longurl']
