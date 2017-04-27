@@ -50,6 +50,12 @@
           vertical-align: top;
         }
     }
+    @include media-breakpoint-down(sm) {
+      padding: 1rem 0 !important;
+      img {
+            max-height: 70px;
+          }
+    }
   }
   &__search {
     padding: $global-padding * 2 0;
