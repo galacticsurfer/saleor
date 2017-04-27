@@ -116,7 +116,7 @@ def payment_callback(request):
     payment_id = request.GET.get('payment_id')
     payment_request_id = request.GET.get('payment_request_id')
 
-    api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
+    api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
     response = api.payment_request_status(payment_request_id)
     order_id = response['payment_request'].get('purpose').split(' ')[1].split('#')[1]
     status_complete = response['payment_request'].get('status') == 'Completed'
