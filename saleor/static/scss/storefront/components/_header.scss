@@ -56,6 +56,12 @@
             max-height: 70px;
           }
     }
+    @media (max-width: 767px) {
+    padding: 1rem 0 !important;
+    img {
+      max-height: 65px;
+      }
+    }
   }
   &__search {
     padding: $global-padding * 2 0;
