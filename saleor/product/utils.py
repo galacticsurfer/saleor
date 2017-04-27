@@ -127,7 +127,8 @@ def product_json_ld(product, availability=None, attributes=None):
             'image': smart_text(product.get_first_image()),
             'description': product.description,
             'offers': {'@type': 'Offer',
-                       'itemCondition': 'http://schema.org/NewCondition'}}
+                       'itemCondition': 'http://schema.org/NewCondition','price': str(product.price[0]),
+                       'priceCurrency': str(product.price[2])}}
 
     if availability is not None:
         if availability.price_range:
