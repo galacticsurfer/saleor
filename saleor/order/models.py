@@ -20,7 +20,7 @@ from satchless.item import ItemLine, ItemSet
 
 from ..core.utils import build_absolute_uri
 from ..discount.models import Voucher
-from ..product.models import Product
+from ..product.models import Product, ProductVariant
 from ..userprofile.models import Address
 from ..search import index
 from . import OrderStatus
@@ -106,9 +106,23 @@ class Order(models.Model, ItemSet, index.Indexed):
         verbose_name = pgettext_lazy('Order model', 'Order')
         verbose_name_plural = pgettext_lazy('Order model', 'Orders')
 
+    def __init__(self, *args, **kwargs):
+        super(Order, self).__init__(*args, **kwargs)
+        self.old_status = self.status
+
     def save(self, *args, **kwargs):
         if not self.token:
             self.token = str(uuid4())
+
+        # If order status changes to fully paid, deduct quantity from inventory
+        if (self.old_status != self.status and
+           self.status == OrderStatus.FULLY_PAID):
+            for item in self.get_items():
+                Inventory.objects.create(
+                    product_variant=item.stock.variant,
+                    quantity=-item.quantity,
+                    comments="Order #%s" % self.id)
+
         return super(Order, self).save(*args, **kwargs)
 
     def change_status(self, status):
@@ -486,3 +500,19 @@ class OrderNote(models.Model):
         return pgettext_lazy(
             'Order note str',
             'OrderNote for Order #%d' % self.order.pk)
+
+
+class Inventory(models.Model):
+    product_variant = models.ForeignKey(
+        ProductVariant,
+        verbose_name=pgettext_lazy('Inventory field', 'product variant'),
+        related_name='inventory')
+    quantity = models.IntegerField(
+        pgettext_lazy('Inventory field', 'quantity'))
+    comments = models.TextField(
+        pgettext_lazy('Inventory field', 'comments'))
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = pgettext_lazy('Inventory model', 'Inventory')
+        verbose_name_plural = pgettext_lazy('Inventory model', 'Inventory')

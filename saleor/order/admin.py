@@ -4,7 +4,7 @@ from django.forms.models import BaseInlineFormSet
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from .models import Order, OrderedItem, Payment
+from .models import Order, OrderedItem, Payment, Inventory
 
 from django.db.models import Q
 
@@ -148,5 +148,10 @@ class OrderAdmin(OrderModelAdmin):
 #         return ts_to_sarvo
 
 
+class InventoryAdmin(ModelAdmin):
+    list_display = ['product_variant', 'quantity', 'comments']
+
+
 admin.site.register(Order, OrderAdmin)
 # admin.site.register(Ledger, LedgerAdmin)
+admin.site.register(Inventory, InventoryAdmin)

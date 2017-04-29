@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Sum
 from mptt.admin import MPTTModelAdmin
 
 from ..discount.models import Sale
@@ -21,10 +22,19 @@ class ProductAdmin(admin.ModelAdmin):
     #inlines = [ImageAdminInline, ]
 
 
+class ProductVariantAdmin(admin.ModelAdmin):
+    model = ProductVariant
+    list_display = ['name', 'get_inventory']
+
+    def get_inventory(self, obj):
+        return obj.inventory.all().aggregate(Sum('quantity'))['quantity__sum']
+    get_inventory.short_description = 'Inventory'
+
+
 admin.site.register(Category, MPTTModelAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductAttribute)
-admin.site.register(ProductVariant)
+admin.site.register(ProductVariant, ProductVariantAdmin)
 admin.site.register(Stock)
 admin.site.register(AttributeChoiceValue)
 admin.site.register(Sale)

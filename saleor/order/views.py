@@ -21,8 +21,8 @@ from . import OrderStatus
 
 from instamojo_wrapper import Instamojo
 
-API_KEY = 'd311f60b78fb398fab235483fd401cc5'
-AUTH_TOKEN = '46818d0dcf18712cc22c0b574795945f'
+API_KEY = '5312894e99e508f102ea2c6ef7a69316'
+AUTH_TOKEN = 'cb883a7f2018ac11aa81135c431887d1'
 
 logger = logging.getLogger(__name__)
 
@@ -101,9 +101,9 @@ def payment_mojo(request, token):
         pass
 
     if have_details:
-        api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
+        api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
         response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=False, send_sms=True,
-                                              email=email, redirect_url="http://topspin.in:8000/order/payment_callback",
+                                              email=email, redirect_url="http://localhost:8000/order/payment_callback",
                                               buyer_name=full_name, phone=phone)
 
         payment_url = response['payment_request']['longurl']
@@ -116,7 +116,7 @@ def payment_callback(request):
     payment_id = request.GET.get('payment_id')
     payment_request_id = request.GET.get('payment_request_id')
 
-    api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
+    api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
     response = api.payment_request_status(payment_request_id)
     order_id = response['payment_request'].get('purpose').split(' ')[1].split('#')[1]
     status_complete = response['payment_request'].get('status') == 'Completed'
