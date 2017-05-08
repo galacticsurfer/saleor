@@ -24,7 +24,7 @@ from django.http import HttpResponse
 
 urlpatterns = [
     url(r'^', include(core_urls)),
-    url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
+    #url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('allauth.urls')),
     url(r'^account/login', login_view, name="account_login"),

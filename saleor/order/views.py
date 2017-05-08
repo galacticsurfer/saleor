@@ -103,7 +103,7 @@ def payment_mojo(request, token):
     if have_details:
         api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
         response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=False, send_sms=True,
-                                              email=email, redirect_url="http://topspin.in:8000/order/payment_callback",
+                                              email=email, redirect_url="http://topspin.in/order/payment_callback",
                                               buyer_name=full_name, phone=phone)
 
         payment_url = response['payment_request']['longurl']

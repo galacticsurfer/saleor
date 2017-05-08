@@ -9,7 +9,7 @@ from django.db import connection
 
 
 def popupate_categories():
-    with open('/Users/kuliza/export/product_category.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_category.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             cat_id = row['id']
@@ -26,7 +26,7 @@ def popupate_categories():
 
 
 def populate_products():
-    with open('/Users/kuliza/export/product_product.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_product.csv') as csvfile:
         ProductClass.objects.create()
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -41,7 +41,7 @@ def populate_products():
 
 
 def populate_product_product_category():
-    with open('/Users/kuliza/export/product_product_categories.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_product_categories.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             product_id = row['product_id']
@@ -56,7 +56,7 @@ def populate_product_product_category():
 
 
 def populate_product_productvariant():
-    with open('/Users/kuliza/export/product_productvariant.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_productvariant.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             pid = row['id']
@@ -68,7 +68,7 @@ def populate_product_productvariant():
 
 
 def populate_product_productattribute():
-    with open('/Users/kuliza/export/product_productattribute.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_productattribute.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             pid = row['id']
@@ -78,7 +78,7 @@ def populate_product_productattribute():
 
 
 def populate_product_stock():
-    with open('/Users/kuliza/export/product_stock.csv') as csvfile:
+    with open('/home/topspin/saleor/export/product_stock.csv') as csvfile:
         StockLocation.objects.create(name="Bangalore")
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -92,7 +92,7 @@ def populate_product_stock():
 
 
 def populate_userprofile_address():
-    with open('/Users/kuliza/export_latest/userprofile_address.csv') as csvfile:
+    with open('/home/topspin/saleor/export/userprofile_address.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             address_id = row['id']
@@ -115,7 +115,7 @@ def populate_userprofile_address():
 
 
 def populate_userprofile_user():
-    with open('/Users/kuliza/export_latest/userprofile_user.csv') as csvfile:
+    with open('/home/topspin/saleor/export/userprofile_user.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             user_id = row['id']
@@ -135,7 +135,7 @@ def populate_userprofile_user():
 
 
 def populate_userprofile_user_addresses():
-    with open('/Users/kuliza/export_latest/userprofile_user_addresses.csv') as csvfile:
+    with open('/home/topspin/saleor/export/userprofile_user_addresses.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             user_id = row['user_id']
@@ -147,7 +147,7 @@ def populate_userprofile_user_addresses():
 
 
 def populate_shipping_shippingmethod():
-    with open('/Users/kuliza/export_latest/shipping_shippingmethod.csv') as csvfile:
+    with open('/home/topspin/saleor/export/shipping_shippingmethod.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -157,7 +157,7 @@ def populate_shipping_shippingmethod():
 
 
 def populate_shipping_shippingmethodcountry():
-    with open('/Users/kuliza/export_latest/shipping_shippingmethodcountry.csv') as csvfile:
+    with open('/home/topspin/saleor/export/shipping_shippingmethodcountry.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -169,17 +169,20 @@ def populate_shipping_shippingmethodcountry():
 
 
 def populate_django_sessions():
-    with open('/Users/kuliza/export_latest/django_session.csv') as csvfile:
+    with open('/home/topspin/saleor/export/django_session.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             session_key = row['session_key']
             session_data = row['session_data']
             expire_date = row['expire_date']
-            Session.objects.create(session_key=session_key, session_data=session_data, expire_date=expire_date)
+            try:
+                Session.objects.create(session_key=session_key, session_data=session_data, expire_date=expire_date)
+            except:
+                pass
 
 
 def populate_order_order():
-    with open('/Users/kuliza/export_latest/order_order.csv') as csvfile:
+    with open('/home/topspin/saleor/export/order_order.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -198,7 +201,7 @@ def populate_order_order():
 
 
 def populate_order_deliverygroup():
-    with open('/Users/kuliza/export_latest/order_deliverygroup.csv') as csvfile:
+    with open('/home/topspin/saleor/export/order_deliverygroup.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -215,7 +218,7 @@ def populate_order_deliverygroup():
 
 
 def populate_order_ordereditem():
-    with open('/Users/kuliza/export_latest/order_ordereditem.csv') as csvfile:
+    with open('/home/topspin/saleor/export/order_ordereditem.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -236,7 +239,7 @@ def populate_order_ordereditem():
 
 
 def populate_order_orderhistoryentry():
-    with open('/Users/kuliza/export_latest/order_orderhistoryentry.csv') as csvfile:
+    with open('/home/topspin/saleor/export/order_orderhistoryentry.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -251,7 +254,7 @@ def populate_order_orderhistoryentry():
 
 
 def populate_order_payment():
-    with open('/Users/kuliza/export_latest/order_payment.csv') as csvfile:
+    with open('/home/topspin/saleor/export/order_payment.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             xid = row['id']
@@ -327,16 +330,16 @@ def populate():
     # populate_product_productvariant()
     # populate_product_stock()
 
-    # populate_userprofile_address()
-    # populate_userprofile_user()
-    # populate_userprofile_user_addresses()
-    # populate_shipping_shippingmethod()
-    # populate_shipping_shippingmethodcountry()
-    # populate_django_sessions()
-    # populate_order_order()
-    # populate_order_deliverygroup()
-    # populate_order_ordereditem()
-    # populate_order_orderhistoryentry()
-    # populate_order_payment()
+    populate_userprofile_address()
+    populate_userprofile_user()
+    populate_userprofile_user_addresses()
+    #populate_shipping_shippingmethod()
+    #populate_shipping_shippingmethodcountry()
+    populate_django_sessions()
+    populate_order_order()
+    populate_order_deliverygroup()
+    populate_order_ordereditem()
+    populate_order_orderhistoryentry()
+    populate_order_payment()
 
     set_sequence()
