@@ -180,19 +180,20 @@ class Order(models.Model, ItemSet, index.Indexed):
             Price(0, currency=settings.DEFAULT_CURRENCY))
 
     def send_confirmation_email(self):
-        email = self.get_user_current_email()
-        payment_url = build_absolute_uri(
-            reverse('order:details', kwargs={'token': self.token}))
-        context = {'payment_url': payment_url}
-
-        emailit.api.send_mail(
-            email, context, 'order/emails/confirm_email',
-            from_email=settings.ORDER_FROM_EMAIL)
-
-        admin_email = 'topspindia@gmail.com'
-        emailit.api.send_mail(
-            admin_email, context, 'order/emails/confirm_email',
-            from_email=settings.ORDER_FROM_EMAIL)
+        pass
+        # email = self.get_user_current_email()
+        # payment_url = build_absolute_uri(
+        #     reverse('order:details', kwargs={'token': self.token}))
+        # context = {'payment_url': payment_url}
+        #
+        # emailit.api.send_mail(
+        #     email, context, 'order/emails/confirm_email',
+        #     from_email=settings.ORDER_FROM_EMAIL)
+        #
+        # admin_email = 'topspindia@gmail.com'
+        # emailit.api.send_mail(
+        #     admin_email, context, 'order/emails/confirm_email',
+        #     from_email=settings.ORDER_FROM_EMAIL)
 
     def get_last_payment_status(self):
         last_payment = self.payments.last()

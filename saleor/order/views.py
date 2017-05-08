@@ -20,6 +20,9 @@ from ..userprofile.models import User
 from . import OrderStatus
 
 from instamojo_wrapper import Instamojo
+import emailit.api
+from ..core.utils import build_absolute_uri
+from django.core.urlresolvers import reverse
 
 API_KEY = 'd311f60b78fb398fab235483fd401cc5'
 AUTH_TOKEN = '46818d0dcf18712cc22c0b574795945f'
@@ -125,6 +128,20 @@ def payment_callback(request):
         order = Order.objects.get(id=order_id)
         order.status = 'fully-paid'
         order.save()
+        # Email sending
+        email = order.get_user_current_email()
+        payment_url = build_absolute_uri(
+            reverse('order:details', kwargs={'token': order.token}))
+        context = {'payment_url': payment_url}
+
+        emailit.api.send_mail(
+            email, context, 'order/emails/confirm_email',
+            from_email=settings.ORDER_FROM_EMAIL)
+
+        admin_email = ['anup@topspin.in', 'sarvo@topspin.in', 'sachin@topspin.in']
+        emailit.api.send_mail(
+            admin_email, context, 'order/emails/confirm_email',
+            from_email=settings.ORDER_FROM_EMAIL)
         return redirect('/order/%s/' % (order.token, ))
     else:
         return redirect('/')

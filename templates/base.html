@@ -5,7 +5,15 @@
 
 <html lang="{{ LANGUAGE_CODE }}" class="no-js">
     <head>
-        <title>{% block title %}Online Shopping Site for Table tennis Rubbers, Blades, Rackets, Balls, Accessories &amp; More @ {{ settings.name }}{% endblock %}</title>
+        {% if product %}
+            {% with product.get_first_category as category %}
+              {% if category %}
+                <title>{{product.name}} | Buy {{category}} {{product.name}} Online at Best Price in India | Topspin.in</title>
+              {% endif %}
+            {% endwith %}
+        {% else %}
+            <title>{% block title %}Online Shopping Site for Table tennis Rubbers, Blades, Rackets, Balls, Accessories &amp; More @ {{ settings.name }}{% endblock %}</title>
+        {% endif %}
         {% block meta %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
