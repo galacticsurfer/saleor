@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 import datetime
 import json
+import itertools
+from collections import Counter
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponsePermanentRedirect, JsonResponse
@@ -15,6 +17,57 @@ from .utils import (products_with_details, products_for_cart,
                     handle_cart_form, get_availability,
                     get_product_images, get_variant_picker_data,
                     get_product_attributes_data, product_json_ld)
+from saleor.order.models import OrderedItem, Product
+
+
+def recommend(pid, discounts, local_currency, enabled=True):
+    final_products = list()
+    if enabled:
+        pid = int(pid)
+
+        oi_list = OrderedItem.objects.all().values_list('delivery_group__order_id', 'product_id')
+
+        order_product_mapping = dict()
+        for item in oi_list:
+            order_id, product_id = item[0], item[1]
+            if order_id in order_product_mapping:
+                order_product_mapping[order_id].append(product_id)
+            else:
+                order_product_mapping[order_id] = [product_id]
+
+        product_ids = []
+        for k, v in order_product_mapping.items():
+            if pid in v:
+                product_ids.append(v)
+
+        merged = list(itertools.chain(*product_ids))
+        if pid in merged:
+            related_pids = list(set(merged) - set([pid]))
+        else:
+            related_pids = list(set(merged))
+
+        mvp_pids = list()
+
+        if related_pids:
+            while len(mvp_pids) != 3:
+                mvp_pid = max(k for k, v in Counter(related_pids).items())
+                mvp_pids.append(mvp_pid)
+                related_pids.remove(mvp_pid)
+                if len(related_pids) == 0:
+                    break
+
+        products = Product.objects.filter(id__in=mvp_pids)
+        products = products.prefetch_related(
+            'categories', 'images', 'variants__stock',
+            'variants__variant_images__image', 'attributes__values',
+            'product_class__variant_attributes__values',
+            'product_class__product_attributes__values')
+
+        for product in products:
+            avail = get_availability(product, discounts=discounts, local_currency=local_currency)
+            final_products.append((product, avail))
+
+    return final_products
 
 
 def product_details(request, slug, product_id, form=None):
@@ -49,6 +102,7 @@ def product_details(request, slug, product_id, form=None):
     """
     products = products_with_details(user=request.user)
     product = get_object_or_404(products, id=product_id)
+    recommended_products = recommend(product_id, discounts=request.discounts, local_currency=request.currency)
     if product.get_slug() != slug:
         return HttpResponsePermanentRedirect(product.get_absolute_url())
     today = datetime.date.today()
@@ -71,6 +125,7 @@ def product_details(request, slug, product_id, form=None):
         request, templates,
         {'is_visible': is_visible,
          'form': form,
+         'recommended_products': recommended_products,
          'availability': availability,
          'product': product,
          'product_attributes': product_attributes,

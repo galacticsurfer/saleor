@@ -8,6 +8,10 @@
 {% load static from staticfiles %}
 {% load get_thumbnail from product_images %}
 
+{% load staticfiles %}
+{% load product_first_image from product_images %}
+{% load product_availability_schema from jsonld %}
+
 {% block title %}{{ product }} — {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
@@ -135,7 +139,6 @@
         <hr>
         {{ product.description|markdown }}
       </div>
-      <hr>
       <table>
         {% for attribute, value in product_attributes.items %}
           <tr>
@@ -146,4 +149,49 @@
       </table>
     </div>
   </div>
+
+<br/>
+
+{% if recommended_products %}
+  <hr>
+  <h2>Frequently bought together</h2>
+  <br/>
+
+  <div class="row">
+  {% for px,avx in recommended_products %}
+      <div class="col-6 col-lg-3 product-list">
+          <script type="application/ld+json">
+            {% autoescape off %}{% product_availability_schema product %}{% endautoescape %}
+          </script>
+          <a href="{{ px.get_absolute_url }}">
+              <div class="text-center">
+                  <div>
+                      <img class="img-responsive" src="{% product_first_image px method="crop" size="400x400" %}" alt="">
+                      <span class="product-list-item-name" title="{{ px }}">{{ px }}</span>
+                  </div>
+
+                  <div class="panel-footer">
+                      {% if avx.available %}
+                          {% price_range avx.price_range %}
+                          {% if avx.discount %}
+                              {% if avx.price_range_undiscounted.min_price != avx.price_range.min_price %}
+                                  <div class="product-list__sale"><img src="{% static "images/sale_bg.svg" %}">
+                                      <span>
+                                          {% comment %}Translators: Layout may break if character length is different than four.{% endcomment %}
+                                          {% trans "Sale" context "Sale (discount) label for item in product list" %}
+                                    </span>
+                                  </div>
+                              {% endif %}
+                          {% endif %}
+                      {% else %}
+                          &nbsp;
+                      {% endif %}
+                  </div>
+              </div>
+          </a>
+      </div>
+  {% endfor %}
+  </div>
+  <hr>
+{% endif %}
 {% endblock content %}
