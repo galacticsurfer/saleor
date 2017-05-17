@@ -360,6 +360,11 @@
                             <a href="{% url "account_logout" %}">
                                 {% trans "Log out" context "Top navbar link" %}</a>
                           </li>
+                          <li>
+                            <a href="{% url "contact_us" %}">
+                                {% trans "Contact us" context "Top navbar link" %}
+                            </a>
+                          </li>
                         {% else %}
                           <li>
                             <a href="{% url "account_signup" %}">
