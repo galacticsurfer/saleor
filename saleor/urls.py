@@ -20,6 +20,7 @@ from .userprofile.urls import urlpatterns as userprofile_urls
 from .data_feeds.urls import urlpatterns as feed_urls
 from .dashboard.urls import urlpatterns as dashboard_urls
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -38,6 +39,9 @@ urlpatterns = [
     url(r'^profile/', include(userprofile_urls, namespace='profile')),
     url(r'^search/', include(search_urls, namespace='search')),
     url(r'^feeds/', include(feed_urls, namespace='data_feeds')),
+    url(r'^contact/',
+        TemplateView.as_view(template_name='contact.html'),
+        name='contact_us'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'', include('payments.urls'))
