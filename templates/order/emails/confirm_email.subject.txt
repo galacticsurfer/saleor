@@ -1,2 +1,2 @@
 {% load i18n %}
-{% trans "Order details" context "Order confirmation email subject" %}
+{% blocktrans context "Order confirmation email subject" %}Your order #{{ order_id }} with Topspin.in has been successfully placed{% endblocktrans %}
