@@ -20,7 +20,7 @@
                               <tbody>
                                 <tr>
                                   <td valign="top" style="padding-top:0;padding-left:18px;padding-bottom:9px;padding-right:18px;color: #bbb;">
-                                    Your order is successfully placed. View your order summary
+                                    Your order has been dispatched. Track your order below.
                                   </td>
                                 </tr>
                               </tbody>
@@ -83,7 +83,7 @@
                               <tbody>
                                 <tr>
                                   <td valign="top" style="padding:0px 18px 9px;color:#99c900">
-                                    <div style="text-align:center"><span style="font-size:20px"><strong><img src="http://findicons.com/files/icons/1588/farm_fresh_web/32/accept.png" width="24" style="vertical-align:middle;margin-right:3px;"/> Your order is confirmed</strong></span></div>
+                                    <div style="text-align:center"><span style="font-size:20px"><strong><img src="http://findicons.com/files/icons/1588/farm_fresh_web/32/accept.png" width="24" style="vertical-align:middle;margin-right:3px;"/> Your order has been dispatched</strong></span></div>
                                   </td>
                                 </tr>
                               </tbody>
@@ -122,8 +122,8 @@
                                 <tr>
                                   <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
                                     <h2>Dear {{ customer_name }},</h2>
-                                    <p>Your order number #{{ order_id }} has been confirmed and is now being processed. The items will be shipped once ready.</p>
-                                    <p>We&#39;ll send tracking details over email once the order is dispatched.</p>
+                                    <p>Your order number #{{ order_id }} has been dispatched.</p>
+                                    <p>Please find your tracking details below.</p>
                                   </td>
                                 </tr>
                               </tbody>
@@ -164,9 +164,9 @@
                                     <tbody>
                                       <tr>
                                         <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
-                                          <strong>Order No.</strong>
+                                          <strong>Tracking Details.</strong>
                                           <hr>
-                                          {{ order_id }} <br>
+                                          <br>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -183,7 +183,7 @@
                                     <tbody>
                                       <tr>
                                         <td align="center" valign="middle" style="font-family:Arial;font-size:16px;padding:15px">
-                                          <a title="VIEW ORDER" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff" href="{{ payment_url }}">VIEW ORDER</a>
+                                          <a title="TRACK ORDER" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff" href="{{ tracking_url }}">TRACK ORDER</a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -208,7 +208,7 @@
                                         <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
                                           <strong>Shipping Address</strong>
                                           <hr>
-                                          {% include "userprofile/snippets/address-short.html" with address=shipping_address %} 
+                                         {% include "userprofile/snippets/address-short.html" with address=shipping_address %} 
                                         </td>
                                       </tr>
                                     </tbody>
@@ -233,7 +233,7 @@
                                         <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
                                           <strong>Billing Address</strong>
                                           <hr>
-                                          {% include "userprofile/snippets/address-short.html" with address=billing_address %}
+                                          {% include "userprofile/snippets/address-short.html" with address=billing_address %} 
                                         </td>
                                       </tr>
                                     </tbody>

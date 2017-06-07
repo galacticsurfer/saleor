@@ -1,0 +1,2 @@
+{% load i18n %}
+{% blocktrans context "Order tracking email subject" %}Your order #{{ order_id }} with Topspin.in has been dispatched{% endblocktrans %}

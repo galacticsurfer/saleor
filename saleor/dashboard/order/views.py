@@ -9,6 +9,7 @@ from django.utils.translation import pgettext_lazy
 from django_prices.templatetags.prices_i18n import gross
 from payments import PaymentStatus
 from prices import Price
+from django.conf import settings
 
 from ...core.utils import get_paginator_items
 from ...order import OrderStatus
@@ -20,6 +21,7 @@ from .forms import (CancelGroupForm, CancelItemsForm, CancelOrderForm,
                     CapturePaymentForm, ChangeQuantityForm, MoveItemsForm,
                     OrderNoteForm, RefundPaymentForm, ReleasePaymentForm,
                     RemoveVoucherForm, ShipGroupForm)
+import emailit.api
 
 
 @staff_member_required
@@ -253,6 +255,24 @@ def ship_delivery_group(request, order_pk, group_pk):
             'Shipped %s') % group
         messages.success(request, msg)
         group.order.create_history_entry(comment=msg, user=request.user)
+
+        email = order.get_user_current_email()
+        context = {
+             'tracking_url': group.tracking_number,
+             'order_id': order.id,
+             'customer_name': order.billing_address.first_name,
+             'shipping_address': order.shipping_address \
+                 if order.shipping_address else order.billing_address,
+             'billing_address': order.billing_address
+        }
+        emailit.api.send_mail(
+            email, context, 'order/emails/tracking_email',
+            from_email=settings.ORDER_FROM_EMAIL)
+
+        admin_email = ['anup@topspin.in', 'sarvo@topspin.in', 'sachin@topspin.in']
+        emailit.api.send_mail(
+            admin_email, context, 'order/emails/tracking_email',
+            from_email=settings.ORDER_FROM_EMAIL)
         return redirect('dashboard:order-details', order_pk=order_pk)
     elif form.errors:
         status = 400
