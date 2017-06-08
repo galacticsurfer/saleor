@@ -132,7 +132,14 @@ def payment_callback(request):
         email = order.get_user_current_email()
         payment_url = build_absolute_uri(
             reverse('order:details', kwargs={'token': order.token}))
-        context = {'payment_url': payment_url}
+        context = {
+            'payment_url': payment_url,
+            'order_id': order.id,
+            'customer_name': order.billing_address.first_name,
+            'shipping_address': order.shipping_address \
+                if order.shipping_address else order.billing_address,
+            'billing_address': order.billing_address
+        }
 
         emailit.api.send_mail(
             email, context, 'order/emails/confirm_email',
