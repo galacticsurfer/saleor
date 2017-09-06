@@ -4,7 +4,7 @@ from django.forms.models import BaseInlineFormSet
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from .models import Order, OrderedItem, Payment, Inventory
+from .models import Order, OrderedItem, Payment, Inventory, Ledger
 
 from django.db.models import Q
 
@@ -89,7 +89,7 @@ class OrderAdmin(OrderModelAdmin):
     inlines = [PaymentInlineAdmin]
     exclude = ['token']
     readonly_fields = ['customer', 'total', 'voucher']
-    list_display = ['__str__', 'status', 'created', 'user']
+    list_display = ['__str__', 'total', 'status', 'created', 'user', 'user_email']
 
     def customer(self, obj):
         return format_address(obj.billing_address)
@@ -104,48 +104,48 @@ class OrderAdmin(OrderModelAdmin):
         return False
 
 
-# class LedgerAdmin(ModelAdmin):
-#     readonly_fields = ['topspin_to_sachin', 'topspin_to_anup', 'topspin_to_sarvo']
-#     list_display = ['__str__', 'from_user', 'to_user', 'amount']
-#
-#     def topspin_to_sachin(self, obj):
-#         objects = Ledger.objects.filter(Q(from_user='Sachin') | Q(to_user='Sachin'))
-#         ts_to_sachin = 0
-#         for o in objects:
-#             if o.from_user == 'Sachin':
-#                 ts_to_sachin -= o.amount
-#             elif o.to_user == 'Sachin':
-#                 ts_to_sachin += o.amount
-#             else:
-#                 pass
-#
-#         return ts_to_sachin
-#
-#     def topspin_to_anup(self, obj):
-#         objects = Ledger.objects.filter(Q(from_user='Anup') | Q(to_user='Anup'))
-#         ts_to_anup = 0
-#         for o in objects:
-#             if o.from_user == 'Anup':
-#                 ts_to_anup -= o.amount
-#             elif o.to_user == 'Anup':
-#                 ts_to_anup += o.amount
-#             else:
-#                 pass
-#
-#         return ts_to_anup
-#
-#     def topspin_to_sarvo(self, obj):
-#         objects = Ledger.objects.filter(Q(from_user='Sarvotham') | Q(to_user='Sarvotham'))
-#         ts_to_sarvo = 0
-#         for o in objects:
-#             if o.from_user == 'Sarvotham':
-#                 ts_to_sarvo -= o.amount
-#             elif o.to_user == 'Sarvotham':
-#                 ts_to_sarvo += o.amount
-#             else:
-#                 pass
-#
-#         return ts_to_sarvo
+class LedgerAdmin(ModelAdmin):
+     readonly_fields = ['topspin_to_sachin', 'topspin_to_anup', 'topspin_to_sarvo']
+     list_display = ['__str__', 'from_user', 'to_user', 'amount']
+
+     def topspin_to_sachin(self, obj):
+         objects = Ledger.objects.filter(Q(from_user='Sachin') | Q(to_user='Sachin'))
+         ts_to_sachin = 0
+         for o in objects:
+             if o.from_user == 'Sachin':
+                 ts_to_sachin -= o.amount
+             elif o.to_user == 'Sachin':
+                 ts_to_sachin += o.amount
+             else:
+                 pass
+
+         return ts_to_sachin
+
+     def topspin_to_anup(self, obj):
+         objects = Ledger.objects.filter(Q(from_user='Anup') | Q(to_user='Anup'))
+         ts_to_anup = 0
+         for o in objects:
+             if o.from_user == 'Anup':
+                 ts_to_anup -= o.amount
+             elif o.to_user == 'Anup':
+                 ts_to_anup += o.amount
+             else:
+                 pass
+
+         return ts_to_anup
+
+     def topspin_to_sarvo(self, obj):
+         objects = Ledger.objects.filter(Q(from_user='Sarvotham') | Q(to_user='Sarvotham'))
+         ts_to_sarvo = 0
+         for o in objects:
+             if o.from_user == 'Sarvotham':
+                 ts_to_sarvo -= o.amount
+             elif o.to_user == 'Sarvotham':
+                 ts_to_sarvo += o.amount
+             else:
+                 pass
+
+         return ts_to_sarvo
 
 
 class InventoryAdmin(ModelAdmin):
@@ -153,5 +153,5 @@ class InventoryAdmin(ModelAdmin):
 
 
 admin.site.register(Order, OrderAdmin)
-# admin.site.register(Ledger, LedgerAdmin)
+admin.site.register(Ledger, LedgerAdmin)
 admin.site.register(Inventory, InventoryAdmin)
