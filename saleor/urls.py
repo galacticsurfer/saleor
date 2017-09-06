@@ -42,6 +42,9 @@ urlpatterns = [
     url(r'^contact/',
         TemplateView.as_view(template_name='contact.html'),
         name='contact_us'),
+    url(r'^faq/',
+        TemplateView.as_view(template_name='faq.html'),
+        name='faq'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'', include('payments.urls'))
