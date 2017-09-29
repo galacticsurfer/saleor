@@ -21,6 +21,9 @@ class ProductIndex(DocType):
             product_image = ProductImage.objects.get(product_id=obj.id)
         except ProductImage.DoesNotExist:
             product_image = None
+        except ProductImage.MultipleObjectsReturned:
+            product_image = ProductImage.objects.filter(product_id=obj.id).first()
+            
         if product_image:
             image_name = product_image.image.url.split('/')[-1]
             px, ext = image_name.split('.')
