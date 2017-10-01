@@ -5,6 +5,99 @@
 
 <html lang="{{ LANGUAGE_CODE }}" class="no-js">
     <head>
+        <link rel="stylesheet" href='{% static "assets/normalize.css" %}'>
+		<link rel="stylesheet" href='{% static "assets/stylesheet.css" %}'>
+        <script type="text/javascript" src='{% static "assets/jquery-1.11.3.min.js" %}'></script>
+		<!--[if IE 8]><script src='{% static "assets/es5.js" %}'></script><![endif]-->
+		<script src='{% static "assets/selectize.js" %}'></script>
+		<script src='{% static "assets/index.js" %}'></script>
+		<style type="text/css">
+		.selectize-control.products .selectize-dropdown > div {
+			border-bottom: 1px solid rgba(0,0,0,0.05);
+		}
+		.selectize-control.products .selectize-dropdown .by {
+			font-size: 11px;
+			opacity: 0.8;
+		}
+		.selectize-control.products .selectize-dropdown .by::before {
+			content: 'by ';
+		}
+		.selectize-control.products .selectize-dropdown .name {
+			margin-left: 45px;
+            margin-top: -45px;
+            display: block;
+		}
+        .selectize-control.products .selectize-dropdown .price {
+            display: block;
+            font-weight: bold;
+            margin-left: 45px;
+            color: #d00;
+        }
+        .selectize-control.products .selectize-dropdown .image {
+            display: inline-block;
+        }
+		.selectize-control.products .selectize-dropdown .title {
+			display: inline-block;
+		}
+		.selectize-control.products .selectize-dropdown .description {
+			font-size: 12px;
+			display: block;
+			color: #a0a0a0;
+			white-space: nowrap;
+			width: 100%;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+		.selectize-control.products .selectize-dropdown .meta {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			font-size: 10px;
+		}
+		.selectize-control.products .selectize-dropdown .meta li {
+			margin: 0;
+			padding: 0;
+			display: inline;
+			margin-right: 10px;
+		}
+		.selectize-control.products .selectize-dropdown .meta li span {
+			font-weight: bold;
+		}
+		.selectize-control.products::before {
+			-moz-transition: opacity 0.2s;
+			-webkit-transition: opacity 0.2s;
+			transition: opacity 0.2s;
+			content: ' ';
+			z-index: 2;
+			position: absolute;
+			display: block;
+			top: 12px;
+			right: 34px;
+			width: 16px;
+			height: 16px;
+			background: url(static/images/spinner.gif);
+			background-size: 16px 16px;
+			opacity: 0;
+		}
+		.selectize-control.products.loading::before {
+			opacity: 0.4;
+		}
+		.icon {
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			vertical-align: middle;
+			background-size: 16px 16px;
+			margin: 0 3px 0 0;
+		}
+		.icon.fork {
+			background-image: url(images/repo-fork.png);
+		}
+		.icon.source {
+			background-image: url(images/repo-source.png);
+		}
+		</style>
+
         {% if product %}
             {% with product.get_first_category as category %}
               {% if category %}
@@ -31,7 +124,7 @@
 
         {% block stylesheet %}{% endblock stylesheet %}
 
-        <script type="text/javascript" src='{% static "assets/jquery-1.11.3.min.js" %}'></script>
+
         <script type="text/javascript" src='{% static "assets/jssor.slider.mini.js" %}'></script>
 
         <script>
@@ -84,6 +177,38 @@
                 $(window).bind("orientationchange", ScaleSlider);
                 //responsive code end
             });
+
+            $('#select-repo').selectize({
+					valueField: 'id',
+					labelField: 'name',
+					searchField: 'name',
+					options: [],
+					create: false,
+					render: {
+						option: function(item, escape) {
+							return '<div class="hello">' +
+								'<span class="title">' +
+                                '<span class="image"><img src="http://www.topspin.in' + escape(item.image_url) + '" alt="" height="40" width="40"></span>' +
+                                '<span class="name"><font color="blue" size="3" style="font-weight:bold">' + escape(item.name) + '</font> in <font color="blue" size="2">' + escape(item.category) + '</font></span>'+
+                                '<span class="price" font color="#d00">' + escape(item.price) + ' ₹</span>' +
+								'</span>' +
+							'</div>';
+						}
+					},
+					load: function(query, callback) {
+						if (!query.length) return callback();
+						$.ajax({
+							url: 'http://topspin.in:8005/search/?query=' + encodeURIComponent(query),
+							type: 'GET',
+							error: function() {
+								callback();
+							},
+							success: function(res) {
+								callback(res.products.slice(0, 5));
+							}
+						});
+					}
+			});
         }
     </script>
 
@@ -242,24 +367,13 @@
                           <span>{% trans "menu" context "Hamburger button text" %}</span>
                         </div>
                         <a href="/">
-                          <img src="{% static "images/LOGO_SideText.png" %}" alt="Topspin.in" height="100">
+                          <img class="topspin-logo" src="{% static "images/LOGO_SideText.png" %}" alt="Topspin.in">
                         </a>
                       </div>
                       <div class="col-2 col-md-4 navbar__search static">
-                        {% if SEARCH_IS_ENABLED %}
-                          <img class="hidden-md-up mobile-search-icon float-right" src="{% static "images/search-icon.svg" %}">
-                        {% endif %}
-                        {% if SEARCH_IS_ENABLED %}
-                          <form class="form-inline navbar__brand__search" action="{% url "search:search" %}">
-                            <div class="mobile-close-search hidden-md-up">
-                              <img src="{% static "images/close-icon.svg" %}">
-                            </div>
-                            <input class="form-control search-input" type="text" name="q" value="{% if query %}{{ query }}{% endif %}" placeholder="{% trans "Search for product" %}">
-                            <button class="btn btn-link" type="submit">
-                              <img src="{% static "images/search-icon.svg" %}">
-                            </button>
-                          </form>
-                        {% endif %}
+                          <div class="control-group">
+                            <text id="select-repo" class="products" style="width:400px" placeholder="Type in to search..."></text>
+                          </div>
                       </div>
                       <div class="col-2 col-md-4">
                         <div class="navbar__brand__cart float-right">
