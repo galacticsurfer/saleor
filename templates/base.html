@@ -186,7 +186,7 @@
 					create: false,
 					render: {
 						option: function(item, escape) {
-							return '<div class="hello">' +
+							return '<div>' +
 								'<span class="title">' +
                                 '<span class="image"><img src="http://www.topspin.in' + escape(item.image_url) + '" alt="" height="40" width="40"></span>' +
                                 '<span class="name"><font color="blue" size="3" style="font-weight:bold">' + escape(item.name) + '</font> in <font color="blue" size="2">' + escape(item.category) + '</font></span>'+
@@ -204,7 +204,7 @@
 								callback();
 							},
 							success: function(res) {
-								callback(res.products.slice(0, 5));
+								callback(res.products.slice(0, 4));
 							}
 						});
 					}

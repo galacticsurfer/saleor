@@ -51,7 +51,7 @@ class Search(object):
     def build_query(self, query=None):
         if query:
             self.query["from"] = 0
-            self.query["size"] = 5
+            self.query["size"] = 4
             self.query["query"] = dict()
             self.query["query"]["wildcard"] = dict()
             self.query["query"]["wildcard"]["name"] = dict()
@@ -59,7 +59,7 @@ class Search(object):
             self.query["query"]["wildcard"]["name"]["boost"] = 1.0
         else:
             self.query["from"] = 0
-            self.query["size"] = 5
+            self.query["size"] = 4
             self.query["query"] = dict()
             self.query["query"]["match_all"] = dict()
             self.query["query"]["match_all"]["boost"] = 1.0
@@ -93,3 +93,4 @@ class SearchAPI(Resource):
         callbacks.addCallback(sendResponse, request, search_results)
 
         return server.NOT_DONE_YET
+
