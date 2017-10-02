@@ -33,7 +33,9 @@ def sendResponse(cb, request, search_results):
         search_result['category'] = result_source.get('category')
         search_result['price'] = result_source.get('price')
         search_result['image_url'] = result_source.get('image_url')
-        response.append(search_result)
+        hidden = result_source.get('hidden')
+        if not hidden:
+            response.append(search_result)
     final_response = {"products": response}
     request.write(json.dumps(final_response))
     request.finish()
