@@ -55,10 +55,8 @@ class Search(object):
             self.query["from"] = 0
             self.query["size"] = 4
             self.query["query"] = dict()
-            self.query["query"]["wildcard"] = dict()
-            self.query["query"]["wildcard"]["name"] = dict()
-            self.query["query"]["wildcard"]["name"]["wildcard"] = "*%s*" % (query.lower(), )
-            self.query["query"]["wildcard"]["name"]["boost"] = 1.0
+            self.query["query"]["match"] = dict()
+            self.query["query"]["match"]["name"] = "*%s*" % (query.lower(), )
         else:
             self.query["from"] = 0
             self.query["size"] = 4
