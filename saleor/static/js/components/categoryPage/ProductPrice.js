@@ -5,15 +5,23 @@ import SaleImg from '../../../images/sale_bg.svg';
 
 const ProductPrice = ({ availability, price }) => {
   const { discount, priceRange } = availability;
+  var fullValue = 0;
+  var discountPercentage = 0;
+  if(discount) {
+    fullValue = priceRange.minPrice.gross + discount.gross;
+    discountPercentage = (discount.gross / fullValue) * 100;
+  }
+  else {
+    fullValue = priceRange.minPrice.gross;
+  }
   const isPriceRange = priceRange && priceRange.minPrice.gross !== priceRange.maxPrice.gross;
   return (
     <div>
       <span itemProp="price">
-        {isPriceRange && <span>{gettext('from')} </span>} {priceRange.minPrice.grossLocalized}
+        <font style={{fontWeight: 'bold', color: 'black'}}><span class="currency">₹</span>{priceRange.minPrice.gross}</font> &nbsp;
+        { discount && (<strike><font style={{ fontSize:'0.80rem'}}><span class="currency">₹</span>{fullValue}</font></strike>)} &nbsp;
+        { discount && (<font style={{fontSize: '0.70rem', fontWeight: 'bold', color: 'green'}}>{discountPercentage} % off</font>)}
       </span>
-      {discount && (
-        <div className="product-list__sale"><img src={SaleImg}/><span>{gettext('Sale')}</span></div>
-      )}
     </div>
   );
 };

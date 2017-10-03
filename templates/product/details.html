@@ -89,10 +89,11 @@
           <div id="variant-price-component"></div>
         {% else %}
           <h2 class="product__info__price">
-            <span>{% price_range availability.price_range %}</span>
-            {% if availability.discount %}
-              <small class="product__info__price__undiscounted">{% gross availability.price_range_undiscounted.min_price html=True %}</small>
-            {% endif %}
+            <font style="font-weight: bold;color: black;">{% price_range availability.price_range %}</font> &nbsp;
+              {% if availability.discount_percentage %}
+            <strike><font style="font-size:0.80rem">{% price_range availability.price_range_undiscounted %}</font></strike> &nbsp;
+            <font style="font-size:0.70rem;font-weight: bold;color: green;">{{ availability.discount_percentage }} % off</font>
+              {% endif %}
             {% if availability.price_range_local_currency %}
               <br>
               <small class="text-info">

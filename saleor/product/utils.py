@@ -61,7 +61,7 @@ def products_with_availability(products, discounts, local_currency):
 ProductAvailability = namedtuple(
     'ProductAvailability', (
         'available', 'price_range', 'price_range_undiscounted', 'discount',
-        'price_range_local_currency', 'discount_local_currency'))
+        'price_range_local_currency', 'discount_local_currency', 'discount_percentage'))
 
 
 def get_availability(product, discounts=None, local_currency=None):
@@ -89,6 +89,11 @@ def get_availability(product, discounts=None, local_currency=None):
         price_range_local = None
         discount_local_currency = None
 
+    try:
+        discount_percentage = int((discount[0] / undiscounted[0][0]) * 100)
+    except TypeError:
+        discount_percentage = 0
+
     is_available = product.is_in_stock() and product.is_available()
 
     return ProductAvailability(
@@ -97,7 +102,8 @@ def get_availability(product, discounts=None, local_currency=None):
         price_range_undiscounted=undiscounted,
         discount=discount,
         price_range_local_currency=price_range_local,
-        discount_local_currency=discount_local_currency)
+        discount_local_currency=discount_local_currency,
+        discount_percentage=discount_percentage)
 
 
 def handle_cart_form(request, product, create_cart=False):
