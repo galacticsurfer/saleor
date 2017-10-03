@@ -1,6 +1,7 @@
 from elasticsearch_dsl import DocType, Integer, String, Float
 from saleor.product.models import ProductImage
 
+from decimal import Decimal
 
 class ProductIndex(DocType):
     """
@@ -18,6 +19,23 @@ class ProductIndex(DocType):
 
     @classmethod
     def from_obj(cls, obj):
+
+        discounted_price = obj.price[0]
+        discount_percentage = 0
+        if obj.sale_set.exists():
+            sale_obj = obj.sale_set.first()
+            discount_type = sale_obj.type
+            if discount_type == 'percentage':
+                discount_percentage = sale_obj.value
+                discounted_price = obj.price[0] * (1 - (discount_percentage / Decimal(100.0)))
+
+        if obj.categories.first().sale_set.exists():
+            sale_obj = obj.categories.first().sale_set.first()
+            discount_type = sale_obj.type
+            if discount_type == 'percentage':
+                discount_percentage = sale_obj.value
+                discounted_price = obj.price[0] * (1 - (discount_percentage / Decimal(100.0)))
+
         try:
             product_image = ProductImage.objects.get(product_id=obj.id)
         except ProductImage.DoesNotExist:
@@ -47,5 +65,5 @@ class ProductIndex(DocType):
         category_name = obj.categories.first().name
 
         return cls(id=obj.id, name=obj.name, price=obj.price[0], category=category_name, image_url=image_url,
-                   hidden=hidden)
+                   hidden=hidden, discount_percentage=discount_percentage, discounted_price=discounted_price)
 

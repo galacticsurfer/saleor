@@ -32,6 +32,8 @@ def sendResponse(cb, request, search_results):
         search_result['name'] = result_source.get('name')
         search_result['category'] = result_source.get('category')
         search_result['price'] = result_source.get('price')
+        search_result['discounted_price'] = result_source.get('discounted_price')
+        search_result['discount_percentage'] = result_source.get('discount_percentage')
         search_result['image_url'] = result_source.get('image_url')
         hidden = result_source.get('hidden')
         if not hidden:

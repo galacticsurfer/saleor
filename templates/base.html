@@ -186,13 +186,24 @@
 					create: false,
 					render: {
 						option: function(item, escape) {
-							return '<div>' +
-								'<span class="title">' +
-                                '<span class="image"><img src="http://www.topspin.in' + escape(item.image_url) + '" alt="" height="40" width="40"></span>' +
-                                '<span class="name"><font color="blue" size="3" style="font-weight:bold">' + escape(item.name) + '</font> in <font color="blue" size="2">' + escape(item.category) + '</font></span>'+
-                                '<span class="price" font color="#d00">' + escape(item.price) + ' ₹</span>' +
-								'</span>' +
-							'</div>';
+						    if(item.discount_percentage){
+                                return '<div>' +
+                                    '<span class="title">' +
+                                    '<span class="image"><img src="http://www.topspin.in' + escape(item.image_url) + '" alt="" height="40" width="40"></span>' +
+                                    '<span class="name"><font color="blue" size="3" style="font-weight:bold">' + escape(item.name) + '</font> in <font color="blue" size="2">' + escape(item.category) + '</font></span>'+
+                                    '<span class="price" font color="#d00">' + escape(item.discounted_price) + ' ₹  <strike><font style="font-size:0.75rem" color="grey">' + escape(item.price) + ' ₹</font></strike> <font style="font-size:0.65rem;font-weight: bold;color: green;">' + escape(item.discount_percentage) + ' % off</span>' +
+                                    '</span>' +
+                                '</div>';
+                            }
+                            else{
+                                return '<div>' +
+                                    '<span class="title">' +
+                                    '<span class="image"><img src="http://www.topspin.in' + escape(item.image_url) + '" alt="" height="40" width="40"></span>' +
+                                    '<span class="name"><font color="blue" size="3" style="font-weight:bold">' + escape(item.name) + '</font> in <font color="blue" size="2">' + escape(item.category) + '</font></span>'+
+                                    '<span class="price" font color="#d00">' + escape(item.price) + ' ₹  </span>' +
+                                    '</span>' +
+                                '</div>';
+                            }
 						}
 					},
 					load: function(query, callback) {
