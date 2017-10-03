@@ -10,6 +10,7 @@ const ProductPrice = ({ availability, price }) => {
   if(discount) {
     fullValue = priceRange.minPrice.gross + discount.gross;
     discountPercentage = (discount.gross / fullValue) * 100;
+    discountPercentage = discountPercentage.toPrecision(2);
   }
   else {
     fullValue = priceRange.minPrice.gross;
