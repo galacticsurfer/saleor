@@ -7,6 +7,7 @@
     <head>
         <link rel="stylesheet" href='{% static "assets/normalize.css" %}'>
 		<link rel="stylesheet" href='{% static "assets/stylesheet.css" %}'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src='{% static "assets/jquery-1.11.3.min.js" %}'></script>
 		<!--[if IE 8]><script src='{% static "assets/es5.js" %}'></script><![endif]-->
 		<script src='{% static "assets/selectize.js" %}'></script>
@@ -97,6 +98,102 @@
 			background-image: url(images/repo-source.png);
 		}
 		</style>
+        <style type="text/css">
+            body {
+              background-color : #eee ;
+            }
+            .reviews {
+              width : 600px;
+              height : 150px;
+              overflow : hidden ;
+              background-color : #fff ;
+              border-radius : 5px;
+              margin : 50px auto ;
+              position : relative ;
+              box-shadow : 0 0 10px -2px #ddd ;
+            }
+            .panel {
+              width : 100%;
+              max-height: 100%;
+              position : absolute ;
+            }
+            .PanelAct {
+              left : 0 ;
+            }
+            .panel img {
+              width : 100px;
+              height : 100px;
+              text-align : center ;
+              float : left ;
+              margin : 25px;
+            }
+            /*== Removal Start
+            png images background
+            ==*/
+            .panel:nth-of-type(1) img {
+                background : #12aedb ;
+            }
+            .panel:nth-of-type(2) img {
+                background : #db4646 ;
+            }
+            .panel:nth-of-type(3) img {
+                background : #96c465 ;
+            }
+            /*== Removal End==*/
+
+            .panel p {
+              float : left ;
+              width : 420px;
+              clear : right ;
+              text-align : justify ;
+              margin : 25px 0 10px 0;
+              font-size : 14px ;
+              color : #aaa ;
+              line-height : 1.2em
+            }
+            .panel h7 {
+              float : left ;
+              width: 200px;
+              font-size : 14px ;
+              color : #999 ;
+              font-weight : bold ;
+              font-style : italic ;
+            }
+            .control {
+              position : absolute ;
+              bottom : 20px;
+              right : 30px;
+            }
+            .control span {
+              background-color : rgba(0,0,0,0.1) ;
+              padding : 5px;
+              display : inline-block ;
+              vertical-align : top ;
+              margin-left : 5px ;
+              border-radius : 50%;
+              cursor : pointer ;
+              transition : 0.3s ease-in
+            }
+            .ContActive {
+              background-color : #bbb !important ;
+            }
+            .checked {
+              color: orange;
+            }
+            .testimonials-center {
+              text-align:center
+            }
+
+            @media screen and (max-width: 600px) {
+              .reviews {
+                display: none;
+              }
+              .testimonials-center {
+                display: none;
+              }
+            }
+
+        </style>
 
         {% if product %}
             {% with product.get_first_category as category %}
@@ -314,6 +411,50 @@
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <script type="text/javascript">
+            $(document).ready(function(){
+              $(".reviews").each(function(){
+                var This = $(this) ;
+                var Nums = This.find(".panel").size() ;
+                This.find(".panel:first").addClass("PanelAct");
+                This.append("<div class='control'></div>") ;
+                This.find(".panel").not(".PanelAct")
+                  .css("left","100%")
+                for ( i=0 ; i<Nums ; i++) {
+                  This.find(".control").append("<span></span>") ;
+                }
+                This.find(".control span:eq(0)").addClass("ContActive");
+
+                This.find(".control span").click(Reviews);
+
+                function Reviews(){
+                  var loc = $(this).index();
+                  var ActivLoc = This.find(".ContActive").index();
+
+                  $(this).addClass("ContActive")
+                    .siblings().removeAttr("class");
+
+                  if ( loc > ActivLoc ) {
+                    var Dire = '100%'
+                    var IDire = '-100%'
+                  }
+                  if ( loc < ActivLoc ) {
+                    var Dire = '-100%'
+                    var IDire = '100%'
+                  }
+
+                  This.find(".panel").not(".PanelAct")
+                  .css("left",Dire) ;
+                  This.find(".panel:eq("+loc+")")
+                  .animate({'left':'0'},speed)
+                  .addClass("PanelAct")
+                  .siblings(".PanelAct")
+                  .removeClass("PanelAct")
+                  .animate({'left':IDire},speed);
+                }
+              });
+            });
+        </script>
     </head>
 
     <!--Start of Tawk.to Script-->
@@ -488,6 +629,11 @@
                           <li>
                             <a href="{% url "account_logout" %}">
                                 {% trans "Log out" context "Top navbar link" %}</a>
+                          </li>
+                          <li>
+                            <a href="{% url "faq" %}">
+                                {% trans "FAQ" context "Top navbar link" %}
+                            </a>
                           </li>
                           <li>
                             <a href="{% url "contact_us" %}">

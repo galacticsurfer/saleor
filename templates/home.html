@@ -185,6 +185,7 @@
 
     <br/>
 
+    <hr>
     <div class="home">
       <div class="home__featured">
         <h2 class="text-center">{% trans "Featured products" context "Homepage title" %}</h2>
@@ -193,5 +194,32 @@
         </div>
       </div>
     </div>
+
+    <hr>
+    <h3 class="testimonials-center">{% trans "CUSTOMER TESTIMONIALS" %}</h3>
+    <div class='reviews'>
+    {% for review in reviews %}
+        {% if review.review_text %}
+        <div class='panel'>
+            <img src='http://graph.facebook.com/{{review.reviewer.id}}/picture?width=160&height=160'>
+                <p>
+                  "{{review.review_text|truncatechars:200}}"
+                </p>
+            <h8>{{review.reviewer.name}} &nbsp; &nbsp;
+                <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            </h8>
+
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+    <script>
+      speed = 500
+    </script>
+
 
 {% endblock %}
