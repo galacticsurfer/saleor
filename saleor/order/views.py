@@ -1,5 +1,5 @@
 import logging
-
+import json
 from allauth.account.forms import LoginForm
 from django.conf import settings
 from django.contrib import messages, auth
@@ -106,21 +106,31 @@ def payment_mojo(request, token):
     if have_details:
         api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
         response = api.payment_request_create(amount=total_net, purpose=purpose, send_email=False, send_sms=True,
-                                              email=email, redirect_url="http://topspin.in/order/payment_callback",
+                                              email=email, redirect_url="https://topspin.in/order/payment_callback",
                                               buyer_name=full_name, phone=phone)
-
-        payment_url = response['payment_request']['longurl']
-        return redirect(payment_url)
+        if response.get('success'):
+            payment_url = response['payment_request']['longurl']
+            return redirect(payment_url)
+        else:
+            error_message = json.dumps(response.get('message'))
+            messages.error(
+                request,
+                pgettext_lazy(
+                    'Payment gateway error',
+                    error_message))
+            return redirect('order:payment', token=order.token)
+            
     else:
         return redirect('/')
 
 
 def payment_callback(request):
-    payment_id = request.GET.get('payment_id')
+    #payment_id = request.GET.get('payment_id')
     payment_request_id = request.GET.get('payment_request_id')
 
     api = Instamojo(api_key=API_KEY, auth_token=AUTH_TOKEN)
     response = api.payment_request_status(payment_request_id)
+    logger.debug(response)
     order_id = response['payment_request'].get('purpose').split(' ')[1].split('#')[1]
     status_complete = response['payment_request'].get('status') == 'Completed'
 
@@ -250,3 +260,30 @@ def connect_order_with_user(request, token):
             'storefront message',
             'You\'ve successfully connected order with your account'))
     return redirect('order:details', token=order.token)
+
+
+def send_confirmation_email(order_id):
+    order = Order.objects.get(id=order_id)
+    order.status = 'fully-paid'
+    order.save()
+    # Email sending
+    email = order.get_user_current_email()
+    payment_url = build_absolute_uri(
+        reverse('order:details', kwargs={'token': order.token}))
+    context = {
+        'payment_url': payment_url,
+        'order_id': order.id,
+        'customer_name': order.billing_address.first_name,
+        'shipping_address': order.shipping_address \
+            if order.shipping_address else order.billing_address,
+        'billing_address': order.billing_address
+    }
+
+    emailit.api.send_mail(
+        email, context, 'order/emails/confirm_email',
+        from_email=settings.ORDER_FROM_EMAIL)
+
+    admin_email = ['anup@topspin.in', 'sarvo@topspin.in', 'sachin@topspin.in']
+    emailit.api.send_mail(
+        admin_email, context, 'order/emails/confirm_email',
+        from_email=settings.ORDER_FROM_EMAIL)

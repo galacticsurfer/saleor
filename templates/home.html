@@ -146,7 +146,25 @@
             <div style="position:absolute;display:block;top:0px;left:0px;width:100%;height:100%;"></div>
         </div>
         <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 1140px; height: 290px; overflow: hidden;">
+	    <div data-p="112.50" style="display: none;">
+                <a href="products/category/blades/cornilleau-blades-94/">
+                <img data-u="image" src='{% static "images/CORN1.jpg" %}' />
+                </a>
+                <div data-u="thumb"></div>
+            </div>
             <div data-p="112.50" style="display: none;">
+                <a href="products/category/rubbers/cornilleau-rubbers-95/">
+                <img data-u="image" src='{% static "images/CORN2.jpg" %}' />
+                </a>
+                <div data-u="thumb"></div>
+            </div>
+            <!--div data-p="112.50" style="display: none;">
+                <a href="products/topspin-gold-premium-racket-case-371/">
+                <img data-u="image" src='{% static "images/GOLD.jpg" %}' />
+		</a>
+                <div data-u="thumb"></div>
+            </div-->
+            <!--div data-p="112.50" style="display: none;">
                 <img data-u="image" src='{% static "images/AdBanner2new.jpg" %}' />
                 <div data-u="thumb"></div>
             </div>
@@ -157,11 +175,11 @@
             <div data-p="112.50" style="display: none;">
                 <img data-u="image" src='{% static "images/AdBanner4_Tibhar.jpg" %}' />
                 <div data-u="thumb"></div>
-            </div>
-            <div data-p="112.50" style="display: none;">
+            </div-->
+            <!--div data-p="112.50" style="display: none;">
                 <img data-u="image" src='{% static "images/AdBanner5_BatAssembly.jpg" %}' />
                 <div data-u="thumb"></div>
-            </div>
+            </div-->
         </div>
         <!-- Thumbnail Navigator -->
         <div data-u="thumbnavigator" class="jssort09-600-45" style="position:absolute;bottom:0px;left:0px;width:1140px;height:45px;">
@@ -201,7 +219,7 @@
     {% for review in reviews %}
         {% if review.review_text %}
         <div class='panel'>
-            <img src='http://graph.facebook.com/{{review.reviewer.id}}/picture?width=160&height=160'>
+            <img src='https://graph.facebook.com/{{review.reviewer.id}}/picture?width=160&height=160'>
                 <p>
                   "{{review.review_text|truncatechars:200}}"
                 </p>

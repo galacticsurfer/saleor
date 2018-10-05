@@ -75,7 +75,10 @@ def update(request, cart, variant_id):
                         'numItems': cart.quantity,
                         'numLines': len(cart)
                     }}
-        updated_line = cart.get_line(form.cart_line.variant)
+        try:
+	    updated_line = cart.get_line(form.cart_line.variant)
+        except AttributeError:
+            updated_line = None
         if updated_line:
             response['subtotal'] = currencyfmt(
                 updated_line.get_total(discounts=discounts).gross,

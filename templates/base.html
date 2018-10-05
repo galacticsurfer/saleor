@@ -310,7 +310,7 @@
 					load: function(query, callback) {
 						if (!query.length) return callback();
 						$.ajax({
-							url: 'http://topspin.in:8005/search/?query=' + encodeURIComponent(query),
+							url: 'https://topspin.in:8005/search/?query=' + encodeURIComponent(query),
 							type: 'GET',
 							error: function() {
 								callback();
@@ -508,6 +508,11 @@
                                   {% trans "Log in" context "Top navbar link text" %}
                               </a>
                             </li>
+		            <li>
+                              <a href="{% url "faq" %}">
+                                  {% trans "FAQ" context "Top navbar link" %}
+                              </a>
+                            </li>
                           {% endif %}
                         </ul>
                       </div>
@@ -630,16 +635,6 @@
                             <a href="{% url "account_logout" %}">
                                 {% trans "Log out" context "Top navbar link" %}</a>
                           </li>
-                          <li>
-                            <a href="{% url "faq" %}">
-                                {% trans "FAQ" context "Top navbar link" %}
-                            </a>
-                          </li>
-                          <li>
-                            <a href="{% url "contact_us" %}">
-                                {% trans "Contact us" context "Top navbar link" %}
-                            </a>
-                          </li>
                         {% else %}
                           <li>
                             <a href="{% url "account_signup" %}">
@@ -651,17 +646,12 @@
                                 {% trans "Log in" context "Top navbar link" %}
                             </a>
                           </li>
-                          <li>
-                            <a href="{% url "faq" %}">
-                                {% trans "FAQ" context "Top navbar link" %}
-                            </a>
-                          </li>
-                          <li>
-                            <a href="{% url "contact_us" %}">
-                                {% trans "Contact us" context "Top navbar link" %}
-                            </a>
-                          </li>
                         {% endif %}
+                          <li>
+                             <a href="{% url "faq" %}">
+                                 {% trans "FAQ" context "Top navbar link" %}
+                             </a>
+                          </li>
                       </ul>
                     </div>
                     <div class="col-md-3 col-sm-12">
